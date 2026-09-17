@@ -1,0 +1,33 @@
+# Unity carpetas temporales y de caché
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Uu]ser[Ss]ettings/
+
+# Archivos de solución de proyectos
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+
+# VS Code y Visual Studio
+.vs/
+.idea/
+.vscode/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

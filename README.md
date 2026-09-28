@@ -776,6 +776,26 @@ build/
 11. Documentar.
 12. Preparar entrega.
 
+# 🔗 Enlaces del proyecto
+
+## 📋 Jira
+
+Gestión del proyecto, backlog, tareas, subtareas y seguimiento del trabajo:
+
+[Ver proyecto en Jira](https://juanmontoya8109.atlassian.net/jira/software/projects/SCAP/boards/3?filter=&groupBy=subtask)
+
+## 🎨 Figma
+
+Diseños, mockups, prototipos e interfaz de usuario:
+
+[Ver diseños en Figma](https://www.figma.com/design/Hu2lL1YqQx1IOhbXYmDRDm/Untitled?t=9xXcr8seY83S9YO1-1)
+
+## 💻 GitHub
+
+Repositorio principal del proyecto:
+
+[Ver repositorio en GitHub](AQUÍ_VA_EL_LINK_DEL_REPOSITORIO)
+
 # 📄 Licencia
 
 Proyecto desarrollado con fines académicos para el programa:

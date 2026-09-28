@@ -12,8 +12,8 @@ El proyecto utiliza la siguiente estructura de ramas:
 - `team-backend` — Equipo de backend.
 - `team-game-design` — Equipo de diseño de juego.
 - `team-gameplay` — Equipo de jugabilidad.
-- `team-unity-1` — Equipo de Unity 1.
-- `team-unity-2` — Equipo de Unity 2.
+- `team-flutter-1` — Equipo de Flutter 1.
+- `team-flutter-2` — Equipo de Flutter 2.
 - `team-ux-ui` — Equipo de UX/UI.
 
 ## Reglas de desarrollo

@@ -2,121 +2,121 @@
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart) ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js) ![Express](https://img.shields.io/badge/Express.js-REST-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql) ![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github) ![Jira](https://img.shields.io/badge/Jira-Project-0052CC?logo=jira) ![Figma](https://img.shields.io/badge/Figma-UX%2FUI-F24E1E?logo=figma)
 
-> **Proyecto académico — SENA ADSO / Centro de Diseño Tecnológico e Innovación**
+> **Academic Project — SENA ADSO / Center for Technological Design and Innovation**
 
 ---
 
-## 📌 Descripción
+## 📌 Description
 
-**NEXUS-9: Escape Laboratory** es un videojuego educativo 2D de tipo **Escape Room**, desarrollado como proyecto académico para el programa **Análisis y Desarrollo de Software (ADSO) del SENA**.
+**NEXUS-9: Escape Laboratory** is a 2D educational **Escape Room** game developed as an academic project for the **Software Analysis and Development (ADSO) program at SENA**.
 
-El jugador controla a **K-9**, una perrita Jack Russell Terrier que despierta atrapada dentro de un laboratorio de alta tecnología. Para escapar deberá explorar diferentes zonas, interactuar con objetos y resolver retos relacionados con secuencias, instrucciones, condicionales, lógica y patrones.
+The player controls **K-9**, a female Jack Russell Terrier who wakes up trapped inside a high-tech laboratory. To escape, she must explore different areas, interact with objects, and solve challenges involving sequences, instructions, conditionals, logic, and patterns.
 
-El proyecto está diseñado inicialmente como un **MVP de 3 niveles**, priorizando una experiencia jugable, clara y funcional.
+The project is initially designed as a **3-level MVP**, prioritizing a playable, clear, and functional experience.
 
-## 🎯 Objetivo
+## 🎯 Objective
 
-Desarrollar un videojuego educativo 2D de tipo Escape Room que permita al jugador aprender y aplicar conceptos básicos de programación mediante retos interactivos.
+Develop a 2D educational Escape Room game that allows players to learn and apply basic programming concepts through interactive challenges.
 
-### Objetivos específicos
+### Specific Objectives
 
-- Diseñar una experiencia educativa e interactiva.
-- Aplicar conceptos básicos de programación mediante puzzles.
-- Implementar un sistema de niveles.
-- Implementar interacción con objetos.
-- Implementar inventario, temporizador, pistas y puntuación.
-- Implementar condiciones de victoria y derrota.
-- Desarrollar una aplicación multiplataforma mediante Flutter.
-- Crear una API REST mediante Node.js y Express.
-- Utilizar PostgreSQL como sistema de base de datos.
-- Aplicar Git y GitHub para control de versiones.
-- Gestionar el proyecto mediante Jira.
+- Design an educational and interactive experience.
+- Apply basic programming concepts through puzzles.
+- Implement a level system.
+- Implement object interaction.
+- Implement an inventory, timer, hints, and scoring system.
+- Implement victory and defeat conditions.
+- Develop a cross-platform application using Flutter.
+- Create a REST API using Node.js and Express.
+- Use PostgreSQL as the database system.
+- Use Git and GitHub for version control.
+- Manage the project using Jira.
 
-## 🎮 Concepto del juego
+## 🎮 Game Concept
 
-**Género:** Escape Room educativo 2D.
+**Genre:** 2D educational Escape Room.
 
-**Estilo:** ciencia ficción, laboratorio tecnológico, misterio, programación y lógica.
+**Style:** science fiction, technological laboratory, mystery, programming, and logic.
 
-**Interacción:** click/tap, botones, objetos interactivos, selección de respuestas, inventario y paneles.
+**Interaction:** click/tap, buttons, interactive objects, answer selection, inventory, and panels.
 
-No se requiere movimiento libre complejo del personaje para el MVP.
+Complex free character movement is not required for the MVP.
 
-## 📖 Historia
+## 📖 Story
 
-K-9 despierta en un laboratorio desconocido. Las luces están apagadas y varias alarmas comienzan a sonar.
+K-9 wakes up in an unknown laboratory. The lights are off and several alarms begin to sound.
 
-En una pantalla aparece:
+A message appears on a screen:
 
 > **NEXUS-9 CONTAINMENT PROTOCOL ACTIVATED**
 
-Todas las puertas están bloqueadas. K-9 deberá avanzar por diferentes zonas del laboratorio y resolver los sistemas de seguridad para recuperar el control del lugar.
+All doors are locked. K-9 must progress through different areas of the laboratory and solve the security systems to regain control of the facility.
 
-Cada zona contiene un reto diferente. Al completar los tres niveles, K-9 podrá desactivar el protocolo de contención y escapar.
+Each area contains a different challenge. After completing all three levels, K-9 will be able to deactivate the containment protocol and escape.
 
-## 🐕 Personaje principal: K-9
+## 🐕 Main Character: K-9
 
-K-9 es una **Jack Russell Terrier hembra**.
+K-9 is a **female Jack Russell Terrier**.
 
-Características:
+Characteristics:
 
-- Inteligente.
-- Curiosa.
-- Valiente.
-- Resolutiva.
+- Intelligent.
+- Curious.
+- Brave.
+- Resourceful.
 
-K-9 representa al jugador durante toda la experiencia.
+K-9 represents the player throughout the entire experience.
 
 ## 🕹️ Gameplay
 
 ```text
-Explorar
+Explore
    ↓
-Interactuar
+Interact
    ↓
-Encontrar pistas
+Find clues
    ↓
-Resolver puzzle
+Solve puzzle
    ↓
-Obtener recompensa
+Obtain reward
    ↓
-Abrir puerta
+Open door
    ↓
-Avanzar de nivel
+Advance to the next level
 ```
 
-## 🔄 Flujo del juego
+## 🔄 Game Flow
 
 ```text
-MENÚ
+MENU
  ↓
 TUTORIAL
  ↓
-SELECCIÓN DE NIVEL
+LEVEL SELECTION
  ↓
-NIVEL 1 → puzzle → recompensa
+LEVEL 1 → puzzle → reward
  ↓
-NIVEL 2 → puzzle → recompensa
+LEVEL 2 → puzzle → reward
  ↓
-NIVEL 3 → puzzle final → escape
+LEVEL 3 → final puzzle → escape
  ↓
-RESULTADO FINAL
+FINAL RESULT
 ```
 
-# 🧩 Niveles
+# 🧩 Levels
 
-## 🟢 Nivel 1 — Laboratory
+## 🟢 Level 1 — Laboratory
 
-**Dificultad:** Fácil  
-**Concepto:** Secuencias e instrucciones  
-**Objetivo:** Restaurar la energía del laboratorio y conseguir una tarjeta de acceso.
+**Difficulty:** Easy  
+**Concept:** Sequences and instructions  
+**Objective:** Restore power to the laboratory and obtain an access card.
 
-### Objetos
+### Objects
 
-- Computador principal.
-- Caja de mantenimiento.
-- Panel eléctrico.
-- Puerta bloqueada.
+- Main computer.
+- Maintenance box.
+- Electrical panel.
+- Locked door.
 
 ### Puzzle
 
@@ -127,19 +127,19 @@ RESULTADO FINAL
 4. Revisar sistema.
 ```
 
-**Recompensa:** Access Card  
-**Puntuación:** +100
+**Reward:** Access Card  
+**Score:** +100
 
-### Pistas
+### Hints
 
-- El computador necesita energía antes de iniciar.
-- Primero debes conectar la energía.
+- The computer needs power before it can start.
+- You must connect the power first.
 
-## 🟡 Nivel 2 — Control Room
+## 🟡 Level 2 — Control Room
 
-**Dificultad:** Media  
-**Concepto:** Condicionales if/else  
-**Objetivo:** Reparar el sistema lógico que controla las puertas.
+**Difficulty:** Medium  
+**Concept:** If/else conditionals  
+**Objective:** Repair the logic system that controls the doors.
 
 ```text
 if code == 927:
@@ -148,19 +148,19 @@ else:
     keepDoorClosed()
 ```
 
-**Recompensa:** Master Code 927  
-**Puntuación:** +200
+**Reward:** Master Code 927  
+**Score:** +200
 
-### Pistas
+### Hints
 
-- Piensa qué ocurre cuando la condición es verdadera.
-- Si el código es correcto, la puerta debe abrirse.
+- Think about what happens when the condition is true.
+- If the code is correct, the door should open.
 
-## 🔴 Nivel 3 — NEXUS-9 Core
+## 🔴 Level 3 — NEXUS-9 Core
 
-**Dificultad:** Difícil  
-**Concepto:** Lógica y patrones  
-**Objetivo:** Desactivar el protocolo de contención y escapar.
+**Difficulty:** Hard  
+**Concept:** Logic and patterns  
+**Objective:** Deactivate the containment protocol and escape.
 
 ### Puzzle 1
 
@@ -168,7 +168,7 @@ else:
 2 → 4 → 6 → 8 → ?
 ```
 
-Respuesta: **10**
+Answer: **10**
 
 ### Puzzle 2
 
@@ -176,7 +176,7 @@ Respuesta: **10**
 1 → 3 → 5 → 7 → ?
 ```
 
-Respuesta: **9**
+Answer: **9**
 
 ### Código final
 
@@ -186,16 +186,16 @@ Respuesta: **9**
 
 **Puntuación:** +300
 
-**Resultado:** El protocolo se desactiva, la puerta de emergencia se desbloquea y K-9 escapa.
+**Result:** The protocol is deactivated, the emergency door is unlocked, and K-9 escapes.
 
-# ⚙️ Mecánicas
+# ⚙️ Mechanics
 
-- **Interacción:** seleccionar objetos para obtener información o ejecutar acciones.
-- **Inventario:** almacenar objetos obtenidos.
-- **Puertas:** bloqueadas, desbloqueadas y abiertas.
-- **Pistas:** ayudan al jugador y reducen puntuación.
-- **Temporizador:** muestra el tiempo restante del nivel.
-- **Niveles:** completar el nivel actual desbloquea el siguiente.
+- **Interaction:** select objects to obtain information or perform actions.
+- **Inventory:** store obtained items.
+- **Doors:** locked, unlocked, and opened.
+- **Hints:** help the player and reduce the score.
+- **Timer:** displays the remaining time for the level.
+- **Levels:** completing the current level unlocks the next one.
 
 ## 📦 Inventario de ejemplo
 
@@ -206,93 +206,93 @@ INVENTARIO
 [Master Code]
 ```
 
-# 🏆 Sistema de puntuación
+# 🏆 Scoring System
 
 | Acción | Puntos |
 |---|---:|
-| Completar Nivel 1 | +100 |
-| Completar Nivel 2 | +200 |
-| Completar Nivel 3 | +300 |
-| Finalizar rápidamente | +100 |
-| Completar sin pistas | +50 |
-| Usar una pista | -25 |
-| Respuesta incorrecta | -10 |
+| Complete Level 1 | +100 |
+| Complete Level 2 | +200 |
+| Complete Level 3 | +300 |
+| Finish quickly | +100 |
+| Complete without hints | +50 |
+| Use a hint | -25 |
+| Incorrect answer | -10 |
 
-**Puntuación máxima base:** 600 puntos, antes de bonificaciones.
+**Base maximum score:** 600 points, before bonuses.
 
-# 🚧 Alcance del MVP
+# 🚧 MVP Scope
 
-Incluye:
+Includes:
 
-- Menú principal.
+- Main menu.
 - Tutorial.
-- Selección de nivel.
-- Tres niveles.
-- Interacción con objetos.
-- Sistema de puzzles.
-- Inventario básico.
-- Temporizador.
-- Pistas.
-- Puntuación.
-- Puertas.
-- Progresión lineal.
-- Pantallas de victoria y derrota.
-- Backend básico.
-- Base de datos.
-- API REST.
+- Level selection.
+- Three levels.
+- Object interaction.
+- Puzzle system.
+- Basic inventory.
+- Timer.
+- Hints.
+- Scoring.
+- Doors.
+- Linear progression.
+- Victory and defeat screens.
+- Basic backend.
+- Database.
+- REST API.
 - Git/GitHub.
-- Documentación.
+- Documentation.
 
-### Fuera del MVP
+### Outside the MVP
 
-No se implementará inicialmente:
+The following will not be implemented initially:
 
 - Multiplayer.
-- Chat de voz.
-- Ranking online avanzado.
-- IA compleja.
-- Física avanzada.
-- Mundo 3D.
-- Animaciones complejas.
-- Sistema de cuentas avanzado.
-- Guardado en la nube complejo.
+- Voice chat.
+- Advanced online leaderboard.
+- Complex AI.
+- Advanced physics.
+- 3D world.
+- Complex animations.
+- Advanced account system.
+- Complex cloud saving.
 
-# 🔮 Mejoras futuras
+# 🔮 Future Improvements
 
-- Más niveles.
-- Más personajes.
-- Más puzzles.
-- Sistema de logros.
-- Ranking global.
-- Perfiles de jugador.
-- Guardado en la nube.
-- Música dinámica.
-- Efectos de sonido avanzados.
-- Animaciones.
-- Nuevas zonas del laboratorio.
-- Nuevas dificultades.
+- More levels.
+- More characters.
+- More puzzles.
+- Achievement system.
+- Global leaderboard.
+- Player profiles.
+- Cloud saving.
+- Dynamic music.
+- Advanced sound effects.
+- Animations.
+- New laboratory areas.
+- New difficulty levels.
 - Multiplayer.
-- Estadísticas.
+- Statistics.
 
-# 🛠️ Tecnologías
+# 🛠️ Technologies
 
-| Área | Tecnología |
+| Area | Technology |
 |---|---|
 | Frontend | Flutter / Dart |
 | Backend | Node.js / Express |
-| Base de datos | PostgreSQL |
+| Database | PostgreSQL |
 | API | REST |
-| Diseño | Figma / Canva |
-| Gestión | Jira Software |
-| Control de versiones | Git / GitHub |
-| Pruebas API | Postman |
+| Design | Figma / Canva |
+| Management | Jira Software |
+| Version control | Git / GitHub |
+| API Testing | Postman |
 | IDE | Visual Studio Code / Android Studio |
 
-# 🏗️ Arquitectura
+# 🏗️ Architecture
 
 ```text
                  ┌──────────────────┐
-                 │      Usuario     │
+                 │      User     │
                  └────────┬─────────┘
                           ↓
                  ┌──────────────────┐
@@ -311,7 +311,7 @@ No se implementará inicialmente:
                  └──────────────────┘
 ```
 
-# 📁 Estructura del repositorio
+# 📁 Repository Structure
 
 ```text
 NEXUS-9/
@@ -354,7 +354,7 @@ NEXUS-9/
 └── LICENSE
 ```
 
-# 📱 Estructura Flutter
+# 📱 Flutter Structure
 
 ```text
 frontend/
@@ -398,7 +398,7 @@ frontend/
     └── fonts/
 ```
 
-# 👥 Equipo
+# 👥 Team
 
 ## Scrum Master
 
@@ -406,7 +406,7 @@ frontend/
 
 ## Backend — 4
 
-**Líder:** Thomas Vargas
+**Leader:** Thomas Vargas
 
 - Thomas Vargas
 - Daniela Tamayo
@@ -415,7 +415,7 @@ frontend/
 
 ## Game Design — 4
 
-**Líder:** Leandro Calvo
+**Leader:** Leandro Calvo
 
 - Leandro Calvo
 - Juan Felipe Marín
@@ -424,7 +424,7 @@ frontend/
 
 ## Gameplay — 4
 
-**Líder:** Michael Isaza
+**Leader:** Michael Isaza
 
 - Michael Isaza
 - Santiago Galindo
@@ -433,7 +433,7 @@ frontend/
 
 ## Flutter 1 — 4
 
-**Líder:** Luiyer Gamaiel
+**Leader:** Luiyer Gamaiel
 
 - Luiyer Gamaiel
 - Karen Herrera
@@ -442,7 +442,7 @@ frontend/
 
 ## Flutter 2 — 3
 
-**Líder:** Michael Ocampo
+**Leader:** Michael Ocampo
 
 - Michael Ocampo
 - Julián Valencia
@@ -450,44 +450,44 @@ frontend/
 
 ## UX/UI — 4
 
-**Líder:** Joseph Gómez
+**Leader:** Joseph Gómez
 
 - Joseph Gómez
 - Juan David Vinasco
 - Stiven Sánchez
 - Samuel León
 
-**Total: 24 integrantes.**
+**Total: 24 members.**
 
-# 👨‍💻 Responsabilidades
+# 👨‍💻 Responsibilities
 
 ### Backend
 
-Node.js, Express, PostgreSQL, REST API, usuarios, puntuaciones, progreso e integración.
+Node.js, Express, PostgreSQL, REST API, users, scores, progress, and integration.
 
 ### Game Design
 
-Historia, personajes, niveles, puzzles, objetivos, dificultad, pistas, recompensas y conceptos educativos.
+Story, characters, levels, puzzles, objectives, difficulty, hints, rewards, and educational concepts.
 
 ### Gameplay
 
-Mecánicas, interacciones, inventario, puzzles, temporizador, puntuación, puertas y progresión.
+Mechanics, interactions, inventory, puzzles, timer, scoring, doors, and progression.
 
 ### Flutter 1
 
-Arquitectura Flutter, menú, tutorial, selección de niveles, GameScreen, Nivel 1 e integración UI.
+Flutter architecture, menu, tutorial, level selection, GameScreen, Level 1, and UI integration.
 
 ### Flutter 2
 
-Niveles 2 y 3, navegación, pantalla final, responsive, integración y pruebas.
+Levels 2 and 3, navigation, final screen, responsive design, integration, and testing.
 
 ### UX/UI
 
-Figma, identidad visual, colores, tipografía, wireframes, mockups, fondos, botones, iconos, K-9, objetos y HUD.
+Figma, visual identity, colors, typography, wireframes, mockups, backgrounds, buttons, icons, K-9, objects, and HUD.
 
 ### Scrum Master
 
-Scrum, Jira, planificación, Daily Scrum, Review, retrospectiva, seguimiento, bloqueos, GitHub, integración y entrega.
+Scrum, Jira, planning, Daily Scrum, Review, retrospective, tracking, blockers, GitHub, integration, and delivery.
 
 # 📋 Jira
 
@@ -506,7 +506,7 @@ EPIC 9 — Testing and Quality
 EPIC 10 — Documentation and Delivery
 ```
 
-### Ejemplo
+### Example
 
 ```text
 EPIC — Level 1
@@ -527,59 +527,32 @@ EPIC — Level 1
     SUBTASK — Add door
 ```
 
-# 🌿 Git y GitHub
+# 🌿 Git and GitHub
 
 ```text
 main
-│
 └── develop
-    │
-    ├── team/backend
-    │   ├── feature/backend-auth
-    │   ├── feature/backend-api
-    │   ├── feature/backend-database
-    │   └── feature/backend-scores
-    │
-    ├── team/game-design
-    │   ├── feature/story
-    │   ├── feature/level-01
-    │   ├── feature/level-02
-    │   └── feature/level-03
-    │
-    ├── team/gameplay
-    │   ├── feature/puzzle-system
-    │   ├── feature/inventory
-    │   ├── feature/timer
-    │   └── feature/score
-    │
-    ├── team/flutter-1
-    │   ├── feature/menu
-    │   ├── feature/tutorial
-    │   ├── feature/level-01-ui
-    │   └── feature/navigation
-    │
-    ├── team/flutter-2
-    │   ├── feature/level-02
-    │   ├── feature/level-03
-    │   ├── feature/result-screen
-    │   └── feature/responsive
-    │
-    └── team/ux-ui
-        ├── feature/main-menu-design
-        ├── feature/level-01-design
-        ├── feature/level-02-design
-        └── feature/level-03-design
+    ├── feature/menu
+    ├── feature/tutorial
+    ├── feature/level-01
+    ├── feature/level-02
+    ├── feature/level-03
+    ├── feature/puzzle-system
+    ├── feature/inventory
+    ├── feature/timer
+    ├── feature/score
+    └── feature/backend-api
 ```
 
-## Flujo
+## Workflow
 
 ```text
-Crear rama → desarrollar → probar → commit → push
-→ Pull Request → revisión → merge a develop
-→ integración → pruebas → main
+Create branch → develop → test → commit → push
+→ Pull Request → review → merge into develop
+→ integration → testing → main
 ```
 
-# 📝 Convención de commits
+# 📝 Commit Convention
 
 ```bash
 feat: add level 1 puzzle
@@ -590,67 +563,67 @@ test: validate puzzle answers
 refactor: improve level manager
 ```
 
-# 📚 Documentación
+# 📚 Documentation
 
-La documentación oficial estará disponible en GitHub Wiki y `docs/`.
+Official documentation will be available in the GitHub Wiki and `docs/`.
 
-1. Acta de constitución.
-2. Requisitos.
-3. Alcance.
-4. Historias de usuario.
+1. Project charter.
+2. Requirements.
+3. Scope.
+4. User stories.
 5. Product Backlog.
 6. Sprint Backlog.
 7. Game Design Document.
-8. Historia.
-9. Diseño de niveles.
-10. Diseño de puzzles.
+8. Story.
+9. Design de niveles.
+10. Design de puzzles.
 11. UX/UI.
 12. Arquitectura.
-13. Diagramas UML.
-14. Base de datos.
+13. UML diagrams.
+14. Database.
 15. API REST.
 16. Git/GitHub.
-17. Plan de pruebas.
-18. Manual de instalación.
-19. Manual de usuario.
-20. Manual de mantenimiento.
-21. Evidencias y entregables.
+17. Test plan.
+18. Installation manual.
+19. User manual.
+20. Maintenance manual.
+21. Evidence and deliverables.
 
-# 📅 Plan de trabajo — 1 semana
+# 📅 One-Week Work Plan
 
-| Día | Actividades |
+| Day | Activities |
 |---|---|
-| Día 1 y 2 | Planeación, Jira, GitHub, arquitectura y niveles |
-| Día 3 | Sistemas principales y UI base |
-| Día 3 | Implementación del Nivel 1 |
-| Día 4 | Implementación de Niveles 2 y 3 |
-| Día 4 | Integración frontend/backend/database |
-| Día 5 | Testing y corrección de errores |
-| Día 5 | Documentación, evidencias y entrega |
+| Day 1 | Planning, Jira, GitHub, architecture, and levels |
+| Day 2 | Core systems and base UI |
+| Day 3 | Level 1 implementation |
+| Day 4 | Level 2 and Level 3 implementation |
+| Day 5 | Frontend/backend/database integration |
+| Day 6 | Testing and bug fixing |
+| Day 7 | Documentation, evidence, and delivery |
 
-# 🧪 Pruebas
+# 🧪 Testing
 
-Se realizarán pruebas:
+The following tests will be performed:
 
-- Funcionales.
-- De integración.
-- De API mediante Postman.
-- De UI.
-- De navegación.
-- De puzzles.
-- De puntuación.
-- De orientación horizontal.
-- De plataforma.
+- Functional tests.
+- Integration tests.
+- API tests using Postman.
+- UI tests.
+- Navigation tests.
+- Puzzle tests.
+- Scoring tests.
+- Landscape orientation tests.
+- Platform tests.
 
-Flujo de integración:
+Integration flow:
 
 ```text
 Flutter → REST API → Node.js → PostgreSQL
 ```
 
-# 🚀 Instalación
+# 🚀 Installation
 
-## Requisitos
+## Requirements
 
 - Git.
 - Flutter.
@@ -661,12 +634,11 @@ Flutter → REST API → Node.js → PostgreSQL
 - Android Studio para Android.
 - Xcode para iOS.
 
-## Clonar
+## Clone
 
 ```bash
-git clone https://github.com/ORGANIZACION/escapeRoom.git
-cd escapeRoom
-
+git clone https://github.com/ORGANIZACION/NEXUS-9.git
+cd NEXUS-9
 ```
 
 ## Frontend
@@ -677,7 +649,7 @@ flutter pub get
 flutter run
 ```
 
-Para Web:
+For Web:
 
 ```bash
 flutter run -d chrome
@@ -691,7 +663,7 @@ npm install
 npm run dev
 ```
 
-o, según la configuración:
+or, depending on the configuration:
 
 ```bash
 npm start
@@ -703,11 +675,11 @@ npm start
 CREATE DATABASE nexus9;
 ```
 
-Después ejecutar los scripts de `database/scripts/`.
+Then execute the scripts in `database/scripts/`.
 
-# 🔐 Variables de entorno
+# 🔐 Environment Variables
 
-Crear `.env` en el backend:
+Create `.env` in the backend:
 
 ```env
 PORT=3000
@@ -721,9 +693,9 @@ DB_PASSWORD=your_password
 JWT_SECRET=your_secret
 ```
 
-No subir `.env` a GitHub.
+Do not upload `.env` to GitHub.
 
-Ejemplo de `.gitignore`:
+Example `.gitignore`:
 
 ```text
 .env
@@ -732,76 +704,56 @@ build/
 .dart_tool/
 ```
 
-# ✅ Criterios de aceptación del MVP
+# ✅ MVP Acceptance Criteria
 
-- [ ] El proyecto compila correctamente.
-- [ ] El menú funciona.
-- [ ] El tutorial funciona.
-- [ ] Se puede iniciar una partida.
-- [ ] Los tres niveles son accesibles.
-- [ ] Cada nivel tiene un puzzle.
-- [ ] Las respuestas correctas permiten avanzar.
-- [ ] Las respuestas incorrectas generan penalización.
-- [ ] El inventario funciona.
-- [ ] Las puertas funcionan.
-- [ ] El temporizador funciona.
-- [ ] Las pistas funcionan.
-- [ ] La puntuación funciona.
-- [ ] Existen pantallas de victoria y derrota.
-- [ ] El backend recibe información.
-- [ ] PostgreSQL almacena la información requerida.
-- [ ] La API REST funciona.
-- [ ] El código está en GitHub.
-- [ ] Jira contiene las tareas.
-- [ ] La documentación está completa.
-- [ ] Existen evidencias de pruebas.
-- [ ] Se puede realizar una demostración del juego.
+- [ ] The project builds successfully.
+- [ ] The menu works.
+- [ ] The tutorial works.
+- [ ] A game can be started.
+- [ ] All three levels are accessible.
+- [ ] Each level has a puzzle.
+- [ ] Correct answers allow the player to progress.
+- [ ] Incorrect answers generate a penalty.
+- [ ] The inventory works.
+- [ ] The doors work.
+- [ ] The timer works.
+- [ ] The hints work.
+- [ ] The scoring system works.
+- [ ] Victory and defeat screens exist.
+- [ ] The backend receives information.
+- [ ] PostgreSQL stores the required information.
+- [ ] The REST API works.
+- [ ] The code is available on GitHub.
+- [ ] Jira contains the tasks.
+- [ ] The documentation is complete.
+- [ ] Testing evidence exists.
+- [ ] The game can be demonstrated.
 
-# 📊 Estado del proyecto
+# 📊 Project Status
 
-**Estado:** MVP en desarrollo.
+**Status:** MVP in development.
 
-### Prioridades
+### Priorities
 
-1. Finalizar arquitectura.
-2. Configurar repositorio.
-3. Configurar Jira.
-4. Crear estructura Flutter.
-5. Implementar sistemas principales.
-6. Implementar Nivel 1.
-7. Implementar Nivel 2.
-8. Implementar Nivel 3.
-9. Integrar backend.
-10. Probar.
-11. Documentar.
-12. Preparar entrega.
+1. Finalize architecture.
+2. Configure repository.
+3. Configure Jira.
+4. Create Flutter structure.
+5. Implement core systems.
+6. Implement Level 1.
+7. Implement Level 2.
+8. Implement Level 3.
+9. Integrate backend.
+10. Test.
+11. Document.
+12. Prepare delivery.
 
-# 🔗 Enlaces del proyecto
+# 📄 License
 
-## 📋 Jira
+Project developed for academic purposes for the program:
 
-Gestión del proyecto, backlog, tareas, subtareas y seguimiento del trabajo:
-
-[Ver proyecto en Jira](https://juanmontoya8109.atlassian.net/jira/software/projects/SCAP/boards/3?filter=&groupBy=subtask)
-
-## 🎨 Figma
-
-Diseños, mockups, prototipos e interfaz de usuario:
-
-[Ver diseños en Figma](https://www.figma.com/design/Hu2lL1YqQx1IOhbXYmDRDm/Untitled?t=9xXcr8seY83S9YO1-1)
-
-## 💻 GitHub
-
-Repositorio principal del proyecto:
-
-[Ver repositorio en GitHub](AQUÍ_VA_EL_LINK_DEL_REPOSITORIO)
-
-# 📄 Licencia
-
-Proyecto desarrollado con fines académicos para el programa:
-
-**Análisis y Desarrollo de Software — ADSO**  
-**SENA — Centro de Diseño Tecnológico e Innovación**
+**Software Analysis and Development — ADSO**  
+**SENA — Centro de Design Tecnológico e Innovación**
 
 ---
 
@@ -809,4 +761,4 @@ Proyecto desarrollado con fines académicos para el programa:
 
 > **Explore. Think. Solve. Escape.**
 
-**Proyecto académico — SENA ADSO**
+**Academic Project — SENA ADSO**

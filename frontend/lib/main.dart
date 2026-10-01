@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'config/app_config.dart';
-import 'screens/menu_screen.dart';
+import 'screens/loading_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // NEXUS-9 funciona únicamente en horizontal.
+await SystemChrome.setPreferredOrientations([
+  DeviceOrientation.landscapeLeft,
+  DeviceOrientation.landscapeRight,
+]);
+
+  // Pantalla completa.
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+  );
+
   runApp(const Nexus9App());
 }
 
@@ -21,7 +35,7 @@ class Nexus9App extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      home: const MenuScreen(),
+      home: const LoadingScreen(),
     );
   }
 }

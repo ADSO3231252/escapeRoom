@@ -125,7 +125,7 @@ class Level3Controller extends ChangeNotifier {
   }
 
   /// What Luna can interact with right now: 'note', 'panel' or
-  /// 'cable_<id>'. Null if nothing is in range.
+     /// `cable_<id>`. Null if nothing is in range.
   String? get nearbyInteractableId {
     if (phase != Level3Phase.playing || overlay != Level3Overlay.none) {
       return null;

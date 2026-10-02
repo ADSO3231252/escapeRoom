@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../levels/level_02/screens/level_02_screen.dart';
 import 'game_screen.dart';
 
 class LevelSelectScreen extends StatelessWidget {
@@ -12,6 +13,15 @@ class LevelSelectScreen extends StatelessWidget {
         builder: (context) => GameScreen(
           levelId: levelId,
         ),
+      ),
+    );
+  }
+
+  void _openLevel2(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Level02Screen(),
       ),
     );
   }
@@ -36,23 +46,32 @@ class LevelSelectScreen extends StatelessWidget {
 
             const SizedBox(height: 30),
 
+            // NIVEL 1
             ElevatedButton(
               onPressed: () => _openLevel(context, 1),
-              child: const Text('NIVEL 1 — LABORATORY'),
+              child: const Text(
+                'NIVEL 1 — LABORATORY',
+              ),
             ),
 
             const SizedBox(height: 15),
 
+            // NIVEL 2
             ElevatedButton(
-              onPressed: () => _openLevel(context, 2),
-              child: const Text('NIVEL 2 — CONTROL ROOM'),
+              onPressed: () => _openLevel2(context),
+              child: const Text(
+                'NIVEL 2 — CONTROL ROOM',
+              ),
             ),
 
             const SizedBox(height: 15),
 
+            // NIVEL 3
             ElevatedButton(
               onPressed: () => _openLevel(context, 3),
-              child: const Text('NIVEL 3 — NEXUS-9 CORE'),
+              child: const Text(
+                'NIVEL 3 — NEXUS-9 CORE',
+              ),
             ),
           ],
         ),

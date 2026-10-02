@@ -8,7 +8,10 @@ import 'puzzle_2_screen.dart';
 class Puzzle1Screen extends StatelessWidget {
   final Level02State state;
 
-  const Puzzle1Screen({super.key, required this.state});
+  const Puzzle1Screen({
+    super.key,
+    required this.state,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +30,51 @@ class Puzzle1Screen extends StatelessWidget {
               padding: const EdgeInsets.all(28),
               decoration: BoxDecoration(
                 color: const Color(0xFF0B111B),
-                border: Border.all(color: const Color(0xFF33445E)),
+                border: Border.all(
+                  color: const Color(0xFF33445E),
+                ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.door_front_door_outlined, size: 58, color: Color(0xFF55D6FF)),
+                  const Icon(
+                    Icons.door_front_door_outlined,
+                    size: 58,
+                    color: Color(0xFF55D6FF),
+                  ),
                   const SizedBox(height: 18),
                   const Text(
                     'PUZZLE 1 — LAS PUERTAS',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   const Text(
-                    'La puerta correcta es la que tiene la luz encendida.
-Luna debe entrar por ella para continuar.',
+                    'La puerta correcta es la que tiene la luz encendida.\n\n'
+                    'Luna debe entrar por ella para continuar.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white70, height: 1.4),
+                    style: TextStyle(
+                      color: Colors.white70,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: 22),
                   FilledButton.icon(
                     onPressed: state.puzzle1Solved
-                        ? () => Navigator.pushReplacement(
+                        ? () {
+                            Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (_) => Puzzle2Screen(state: state)),
-                            )
+                              MaterialPageRoute(
+                                builder: (_) => Puzzle2Screen(
+                                  state: state,
+                                ),
+                              ),
+                            );
+                          }
                         : null,
                     icon: const Icon(Icons.arrow_forward),
                     label: const Text('CONTINUAR AL PUZZLE 2'),

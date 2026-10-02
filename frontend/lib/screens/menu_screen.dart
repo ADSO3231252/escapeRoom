@@ -9,11 +9,9 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
       body: Center(
         child: AspectRatio(
           aspectRatio: 16 / 9,
-
           child: LayoutBuilder(
             builder: (context, constraints) {
               final width = constraints.maxWidth;
@@ -35,20 +33,48 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // NUEVA PARTIDA
                   // ==================================================
+
                   Positioned(
                     left: 130 / 1920 * width,
                     top: 332 / 1080 * height,
                     width: 428 / 1920 * width,
                     height: 80 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
-
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const TutorialScreen(),
+                          PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 900),
+                            reverseTransitionDuration:
+                                const Duration(milliseconds: 900),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return const TutorialScreen();
+                            },
+                            transitionsBuilder: (
+                              context,
+                              animation,
+                              secondaryAnimation,
+                              child,
+                            ) {
+                              final curvedAnimation = CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOutCubic,
+                              );
+
+                              return FadeTransition(
+                                opacity: curvedAnimation,
+                                child: SlideTransition(
+                                  position: Tween<Offset>(
+                                    begin: const Offset(0.08, 0),
+                                    end: Offset.zero,
+                                  ).animate(curvedAnimation),
+                                  child: child,
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
@@ -58,15 +84,14 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // CONTINUAR
                   // ==================================================
+
                   Positioned(
                     left: 130 / 1920 * width,
                     top: 427 / 1080 * height,
                     width: 428 / 1920 * width,
                     height: 80 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
-
                       onTap: () {},
                     ),
                   ),
@@ -74,15 +99,14 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // RANKING
                   // ==================================================
+
                   Positioned(
                     left: 130 / 1920 * width,
                     top: 527 / 1080 * height,
                     width: 428 / 1920 * width,
                     height: 80 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
-
                       onTap: () {},
                     ),
                   ),
@@ -90,15 +114,14 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // OPCIONES
                   // ==================================================
+
                   Positioned(
                     left: 130 / 1920 * width,
                     top: 627 / 1080 * height,
                     width: 428 / 1920 * width,
                     height: 80 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
-
                       onTap: () {},
                     ),
                   ),
@@ -106,15 +129,14 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // SALIR
                   // ==================================================
+
                   Positioned(
                     left: 130 / 1920 * width,
                     top: 725 / 1080 * height,
                     width: 428 / 1920 * width,
                     height: 80 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFFFF3030),
-
                       onTap: () {
                         _showExitDialog(context);
                       },
@@ -124,16 +146,15 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // AUDIO
                   // ==================================================
+
                   Positioned(
                     left: 1635 / 1920 * width,
                     top: 47 / 1080 * height,
                     width: 90 / 1920 * width,
                     height: 90 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
                       borderRadius: 12,
-
                       onTap: () {},
                     ),
                   ),
@@ -141,16 +162,15 @@ class MenuScreen extends StatelessWidget {
                   // ==================================================
                   // CONFIGURACIÓN
                   // ==================================================
+
                   Positioned(
                     left: 1771 / 1920 * width,
                     top: 47 / 1080 * height,
                     width: 90 / 1920 * width,
                     height: 90 / 1080 * height,
-
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
                       borderRadius: 12,
-
                       onTap: () {},
                     ),
                   ),
@@ -170,27 +190,23 @@ class MenuScreen extends StatelessWidget {
   static void _showExitDialog(BuildContext context) {
     showDialog(
       context: context,
-
       builder: (context) {
         return AlertDialog(
           title: const Text('Salir'),
-
-          content: const Text('¿Estás seguro de que quieres salir del juego?'),
-
+          content: const Text(
+            '¿Estás seguro de que quieres salir del juego?',
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-
               child: const Text('CANCELAR'),
             ),
-
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-
               child: const Text('SALIR'),
             ),
           ],
@@ -288,27 +304,20 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
         onTap: widget.onTap,
 
         child: AnimatedContainer(
-          duration: const Duration(
-            milliseconds: 120,
-          ),
-
+          duration: const Duration(milliseconds: 120),
           curve: Curves.easeOut,
 
           decoration: BoxDecoration(
-
             // ========================================================
             // NORMAL → INVISIBLE
             // HOVER / CLICK → LIGERO BRILLO
             // ========================================================
 
             color: _isActive
-                ? widget.glowColor.withValues(
-                    alpha: 0.08,
-                  )
+                ? widget.glowColor.withValues(alpha: 0.08)
                 : Colors.transparent,
 
-            borderRadius:
-                BorderRadius.circular(
+            borderRadius: BorderRadius.circular(
               widget.borderRadius,
             ),
 
@@ -318,11 +327,8 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
 
             border: Border.all(
               color: _isActive
-                  ? widget.glowColor.withValues(
-                      alpha: 0.65,
-                    )
+                  ? widget.glowColor.withValues(alpha: 0.65)
                   : Colors.transparent,
-
               width: _isActive ? 2 : 0,
             ),
 
@@ -333,12 +339,8 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
             boxShadow: _isActive
                 ? [
                     BoxShadow(
-                      color: widget.glowColor.withValues(
-                        alpha: 0.40,
-                      ),
-
+                      color: widget.glowColor.withValues(alpha: 0.40),
                       blurRadius: 16,
-
                       spreadRadius: 1,
                     ),
                   ]

@@ -9,6 +9,7 @@ import 'caesar_cipher.dart';
 import 'dark_room.dart';
 import 'final_password.dart';
 import 'locked_terminal.dart';
+import '../../screens/menu_screen.dart';
 
 /// Entry screen of Level 4 - La Terminal Cifrada.
 ///
@@ -108,9 +109,66 @@ class _Level04ScreenState extends State<Level04Screen> {
   }
 
   void _goToLevel5() {
-    // Level 5 will be opened from here.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Nivel 4 completado. Sigue el Nivel 5.')),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF081522),
+          title: const Text(
+            'NIVEL 5',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF9FE7FF),
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 3,
+            ),
+          ),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.lock_clock, color: Color(0xFF34D399), size: 70),
+              SizedBox(height: 20),
+              Text(
+                'PRÓXIMAMENTE',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF34D399),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
+              SizedBox(height: 12),
+              Text(
+                'El Nivel 5 estará disponible próximamente.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MenuScreen()),
+                  (route) => false,
+                );
+              },
+              child: const Text(
+                'ACEPTAR',
+                style: TextStyle(
+                  color: Color(0xFF9FE7FF),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

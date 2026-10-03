@@ -37,6 +37,7 @@ dependencies:
   http: ^1.6.0
   shared_preferences: ^2.5.5
   provider: ^6.1.5+1
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,7 @@ flutter:
     - assets/backgrounds/menu_game.png
     - assets/backgrounds/tutorial.png
     - assets/backgrounds/options_game.png
+    - assets/audio/background_music.mp3
 
 
   # The following line ensures that the Material Icons font is

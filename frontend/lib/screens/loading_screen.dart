@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'menu_screen.dart';
+import '../services/audio_manager.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -18,6 +19,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
+
+    AudioManager.instance.playBackgroundMusic();
+
     _startLoading();
   }
 
@@ -25,41 +29,33 @@ class _LoadingScreenState extends State<LoadingScreen> {
     const totalSteps = 100;
     var currentStep = 0;
 
-    _timer = Timer.periodic(
-      const Duration(milliseconds: 40),
-      (timer) {
-        if (!mounted) {
-          timer.cancel();
-          return;
-        }
+    _timer = Timer.periodic(const Duration(milliseconds: 40), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
 
-        currentStep++;
+      currentStep++;
 
-        setState(() {
-          _progress = currentStep / totalSteps;
-        });
+      setState(() {
+        _progress = currentStep / totalSteps;
+      });
 
-        if (currentStep >= totalSteps) {
-          timer.cancel();
-          _goToMenu();
-        }
-      },
-    );
+      if (currentStep >= totalSteps) {
+        timer.cancel();
+        _goToMenu();
+      }
+    });
   }
 
   void _goToMenu() {
-    Future.delayed(
-      const Duration(milliseconds: 300),
-      () {
-        if (!mounted) return;
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
 
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const MenuScreen(),
-          ),
-        );
-      },
-    );
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const MenuScreen()));
+    });
   }
 
   @override
@@ -78,7 +74,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-
           // ==========================================================
           // 1. FONDO EXTENDIDO
           // ==========================================================
@@ -96,11 +91,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
           // Oscurecemos el fondo extendido para que
           // la imagen principal destaque.
-          Container(
-            color: Colors.black.withValues(
-              alpha: 0.55,
-            ),
-          ),
+          Container(color: Colors.black.withValues(alpha: 0.55)),
 
           // ==========================================================
           // 2. ÁREA PRINCIPAL 16:9
@@ -115,7 +106,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-
                   Image.asset(
                     'assets/backgrounds/loading_screen.png',
                     fit: BoxFit.contain,
@@ -127,21 +117,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   //
                   // Barra de progreso y porcentaje.
                   //
-
                   Align(
-                    alignment: const Alignment(
-                      0,
-                      0.62,
-                    ),
+                    alignment: const Alignment(0, 0.62),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 140,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 140),
                       child: Row(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-
                           // ------------------------------------------
                           // BARRA DE PROGRESO
                           // ------------------------------------------
@@ -150,33 +132,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
                               height: 34,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: const Color(
-                                    0xFF00D9FF,
-                                  ),
+                                  color: const Color(0xFF00D9FF),
                                   width: 3,
                                 ),
-                                borderRadius:
-                                    BorderRadius.circular(9),
+                                borderRadius: BorderRadius.circular(9),
                               ),
-                              padding:
-                                  const EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 7,
                                 vertical: 6,
                               ),
                               child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(4),
-                                child:
-                                    LinearProgressIndicator(
+                                borderRadius: BorderRadius.circular(4),
+                                child: LinearProgressIndicator(
                                   value: _progress,
                                   minHeight: 16,
-                                  backgroundColor:
-                                      Colors.transparent,
+                                  backgroundColor: Colors.transparent,
                                   valueColor:
-                                      const AlwaysStoppedAnimation<
-                                          Color>(
-                                    Color(0xFF00D9FF),
-                                  ),
+                                      const AlwaysStoppedAnimation<Color>(
+                                        Color(0xFF00D9FF),
+                                      ),
                                 ),
                               ),
                             ),

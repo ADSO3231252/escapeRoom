@@ -7,13 +7,11 @@ import 'screens/loading_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // NEXUS-9 funciona únicamente en horizontal.
-await SystemChrome.setPreferredOrientations([
-  DeviceOrientation.landscapeLeft,
-  DeviceOrientation.landscapeRight,
-]);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
 
-  // Pantalla completa.
   await SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   );
@@ -29,12 +27,10 @@ class Nexus9App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppConfig.appName,
-
       theme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-
       home: const LoadingScreen(),
     );
   }

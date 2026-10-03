@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../level3_controller.dart';
 import '../level3_theme.dart';
 import 'retro_button.dart';
+import '../../level_04/level_04_screen.dart';
 
 /// Shown on top of the restored room once the level is completed:
 /// reward, stats, a replay button and a continue button.
@@ -49,10 +50,7 @@ class Level3CompletionCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Level3Theme.gold.withValues(alpha: 0.12),
-                          border: Border.all(
-                            color: Level3Theme.gold,
-                            width: 3,
-                          ),
+                          border: Border.all(color: Level3Theme.gold, width: 3),
                           boxShadow: [
                             BoxShadow(
                               color: Level3Theme.gold.withValues(alpha: 0.55),
@@ -93,10 +91,7 @@ class Level3CompletionCard extends StatelessWidget {
                         children: [
                           _Stat(label: 'TIEMPO', value: c.formattedTime),
                           const SizedBox(width: 18),
-                          _Stat(
-                            label: 'FALLOS',
-                            value: '${c.wrongAttempts}',
-                          ),
+                          _Stat(label: 'FALLOS', value: '${c.wrongAttempts}'),
                           const SizedBox(width: 18),
                           const _Stat(label: 'PROGRESO', value: 'GUARDADO'),
                         ],
@@ -128,7 +123,14 @@ class Level3CompletionCard extends StatelessWidget {
                             color: Level3Theme.neonGreen,
                             icon: Icons.arrow_forward,
                             filled: true,
-                            onPressed: c.continueExploring,
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const Level04Screen(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -158,9 +160,7 @@ class _Stat extends StatelessWidget {
       decoration: BoxDecoration(
         color: Level3Theme.panelBackground.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: Level3Theme.neonBlue.withValues(alpha: 0.4),
-        ),
+        border: Border.all(color: Level3Theme.neonBlue.withValues(alpha: 0.4)),
       ),
       child: Column(
         children: [

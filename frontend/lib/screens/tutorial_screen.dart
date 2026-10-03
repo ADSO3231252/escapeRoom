@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../levels/level_01/level01_screen.dart';
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({super.key});
 
@@ -9,59 +10,88 @@ class TutorialScreen extends StatefulWidget {
 
 class _TutorialScreenState extends State<TutorialScreen> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              final height = constraints.maxHeight;
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.black,
+    body: Stack(
+      fit: StackFit.expand,
+      children: [
+        // ==========================================================
+        // FONDO EXTENDIDO
+        // ==========================================================
+        Image.asset(
+          'assets/backgrounds/tutorial.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        ),
 
-              return Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/backgrounds/tutorial.png',
-                    fit: BoxFit.fill,
-                  ),
+        // Oscurecimiento del fondo extendido
+        Container(
+          color: Colors.black.withValues(alpha: 0.55),
+        ),
 
-                  // VOLVER
-                  Positioned(
-                    left: 475 / 1664 * width,
-                    top: 735 / 936 * height,
-                    width: 250 / 1664 * width,
-                    height: 72 / 936 * height,
-                    child: _InteractiveArea(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
+        // ==========================================================
+        // CONTENIDO ORIGINAL 16:9
+        // ==========================================================
+        Center(
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final height = constraints.maxHeight;
+
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Imagen original sin deformar
+                    Image.asset(
+                      'assets/backgrounds/tutorial.png',
+                      fit: BoxFit.fill,
                     ),
-                  ),
 
-                  // COMENZAR
-                  Positioned(
-                    left: 1015 / 1664 * width,
-                    top: 735 / 936 * height,
-                    width: 310 / 1664 * width,
-                    height: 72 / 936 * height,
-                    child: _InteractiveArea(
-                      onTap: () {
-                        // Próximo paso:
-                        // navegar al Level 1.
-                      },
+                    // VOLVER
+                    Positioned(
+                      left: 475 / 1664 * width,
+                      top: 735 / 936 * height,
+                      width: 250 / 1664 * width,
+                      height: 72 / 936 * height,
+                      child: _InteractiveArea(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+
+                    // COMENZAR
+                    Positioned(
+                      left: 1015 / 1664 * width,
+                      top: 735 / 936 * height,
+                      width: 310 / 1664 * width,
+                      height: 72 / 936 * height,
+                      child: _InteractiveArea(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Level01Screen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }
 
 class _InteractiveArea extends StatefulWidget {

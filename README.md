@@ -1,6 +1,6 @@
-# 🧪 NEXUS-9: Escape Laboratory
+﻿## 🕹️NEXUS-9: Escape Laboratory — [Level 2]
 
-![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart) ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js) ![Express](https://img.shields.io/badge/Express.js-REST-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql) ![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github) ![Jira](https://img.shields.io/badge/Jira-Project-0052CC?logo=jira) ![Figma](https://img.shields.io/badge/Figma-UX%2FUI-F24E1E?logo=figma)
+ ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart) ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js) ![Express](https://img.shields.io/badge/Express.js-REST-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql) ![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github) ![Jira](https://img.shields.io/badge/Jira-Project-0052CC?logo=jira) ![Figma](https://img.shields.io/badge/Figma-UX%2FUI-F24E1E?logo=figma)
 
 > **Academic Project — SENA ADSO / Center for Technological Design and Innovation**
 
@@ -48,7 +48,6 @@ K-9 wakes up in an unknown laboratory. The lights are off and several alarms beg
 
 A message appears on a screen:
 
-> **NEXUS-9 CONTAINMENT PROTOCOL ACTIVATED**
 
 All doors are locked. K-9 must progress through different areas of the laboratory and solve the security systems to regain control of the facility.
 
@@ -143,7 +142,7 @@ FINAL RESULT
 
 ```text
 if code == 927:
-    openDoor()
+    opendoor()
 else:
     keepDoorClosed()
 ```
@@ -170,21 +169,19 @@ else:
 
 Answer: **10**
 
-### Puzzle 2
+### 🧩 Puzzles and solutions
 
-```text
-1 → 3 → 5 → 7 → ?
-```
+* **Puzzle 1 — Lights:** red off, blue on, green off. The clue says that the correct door has the light on.
+* **Puzzle 2 — Conditions:** Red: \(5 > 10\); Blue: \(10 > 5\); Green: \(2 > 8\). Only the blue condition is true.
+* **Puzzle 3 — Code:** 4, 7 and 2 appear. The clue indicates ordering them from lowest to highest: 247.
 
 Answer: **9**
 
-### Código final
+* **Reward:** 🗝️ KEY 2
 
-```text
-9 - 2 - 7
-```
+* **End of level:** When entering 247, "CORRECT LOGIC" appears. Progress is saved and Level 3 opens.
 
-**Puntuación:** +300
+> ⚙️ **Technical responsibility:** Design rules, clues, solutions, difficulty levels and feedback. Clearly document the correct answer for integration.
 
 **Result:** The protocol is deactivated, the emergency door is unlocked, and K-9 escapes.
 
@@ -197,10 +194,10 @@ Answer: **9**
 - **Timer:** displays the remaining time for the level.
 - **Levels:** completing the current level unlocks the next one.
 
-## 📦 Inventario de ejemplo
+### 📦 Example inventory
 
 ```text
-INVENTARIO
+INVENTORY
 
 [Access Card]
 [Master Code]
@@ -469,7 +466,7 @@ Node.js, Express, PostgreSQL, REST API, users, scores, progress, and integration
 
 Story, characters, levels, puzzles, objectives, difficulty, hints, rewards, and educational concepts.
 
-### Gameplay
+### 📄 License
 
 Mechanics, interactions, inventory, puzzles, timer, scoring, doors, and progression.
 

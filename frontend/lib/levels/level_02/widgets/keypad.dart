@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 class Keypad extends StatelessWidget {
@@ -11,16 +13,18 @@ class Keypad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const keys = ['7','8','9','4','5','6','1','2','3','CLR','0','ENT'];
-    return Column(mainAxisSize: MainAxisSize.min, children: [
+    return LayoutBuilder(builder: (context, c) {
+      final w = math.min(306.0, c.maxWidth);
+      return Column(mainAxisSize: MainAxisSize.min, children: [
       Container(
-        width: 270,
+        width: math.min(270.0, w),
         height: 58,
         alignment: Alignment.center,
         decoration: BoxDecoration(color: const Color(0xFF050A10), border: Border.all(color: const Color(0xFF45637E), width: 3), boxShadow: const [BoxShadow(color: Color(0x99000000), offset: Offset(4,4), blurRadius: 0)]),
         child: Text(value.isEmpty ? '---' : value.padRight(3, '_'), style: const TextStyle(fontFamily: 'monospace', fontSize: 27, fontWeight: FontWeight.w900, letterSpacing: 9, color: Color(0xFF74E2FF))),
       ),
       const SizedBox(height: 14),
-      SizedBox(width: 306, child: GridView.builder(
+      SizedBox(width: w, child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: keys.length,
@@ -34,6 +38,7 @@ class Keypad extends StatelessWidget {
           );
         },
       )),
-    ]);
+      ]);
+    });
   }
 }

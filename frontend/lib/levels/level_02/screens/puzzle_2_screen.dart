@@ -112,12 +112,12 @@ class _Puzzle2ScreenState extends State<Puzzle2Screen> {
           Expanded(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(12),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 850),
                   child: PixelPanel(
                     child: Padding(
-                      padding: const EdgeInsets.all(26),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           const Text(

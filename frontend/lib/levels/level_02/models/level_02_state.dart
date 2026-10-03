@@ -7,6 +7,7 @@ class Level02State extends ChangeNotifier {
   bool puzzle2Solved;
   bool puzzle3Solved;
   bool key2Obtained;
+  bool key2Available;
   int score;
   int mistakes;
 
@@ -19,6 +20,7 @@ class Level02State extends ChangeNotifier {
     this.puzzle2Solved = false,
     this.puzzle3Solved = false,
     this.key2Obtained = false,
+    this.key2Available = false,
     this.score = 200,
     this.mistakes = 0,
     this.remainingSeconds = startingSeconds,
@@ -44,6 +46,7 @@ class Level02State extends ChangeNotifier {
     puzzle2Solved = false;
     puzzle3Solved = false;
     key2Obtained = false;
+    key2Available = false;
     score = 200;
     mistakes = 0;
     remainingSeconds = startingSeconds;

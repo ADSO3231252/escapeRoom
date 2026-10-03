@@ -45,6 +45,11 @@ class _Level02ScreenState extends State<Level02Screen>
   bool _openingDoor = false;
   bool _gameOverShown = false;
   int? _nearDoor;
+  bool _nearKey = false;
+  bool _nearLevel3Door = false;
+  Offset _joystick = Offset.zero;
+  static const double _joystickRadius = 52;
+
 
   // The three doors from the mockup: red, blue and green.
   final List<_DoorSpot> _doors = const [
@@ -156,7 +161,92 @@ class _Level02ScreenState extends State<Level02Screen>
     _targetX = _x;
     _targetY = _y;
     _checkDoorDistance();
+    _checkKeyDistance();
+    _checkLevel3DoorDistance();
     setState(() {});
+  }
+
+  void _moveWithVector(double dx, double dy, {double speed = .016}) {
+    if (!mounted) return;
+    final length = math.sqrt(dx * dx + dy * dy);
+    if (length < .05) return;
+    // dx/dy ya vienen normalizados desde el joystick. Conservamos la magnitud
+    // para que haya control analógico: cerca del centro = lento, borde = rápido.
+    final amount = math.min(length, 1.0) * speed;
+    _x = (_x + dx * amount).clamp(.07, .93).toDouble();
+    _y = (_y + dy * amount).clamp(.24, .86).toDouble();
+    _targetX = _x;
+    _targetY = _y;
+    _walking = true;
+    _checkDoorDistance();
+    _checkKeyDistance();
+    _checkLevel3DoorDistance();
+    setState(() {});
+  }
+
+  void _joystickChanged(Offset localPosition, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    var delta = localPosition - center;
+    if (delta.distance > _joystickRadius) {
+      delta = Offset.fromDirection(delta.direction, _joystickRadius);
+    }
+    setState(() {
+      _joystick = delta;
+    });
+    _moveWithVector(delta.dx / _joystickRadius, delta.dy / _joystickRadius);
+  }
+
+  void _joystickReleased() {
+    if (!mounted) return;
+    setState(() {
+      _joystick = Offset.zero;
+      _walking = false;
+    });
+  }
+
+  void _checkKeyDistance() {
+    if (!state.key2Available || state.key2Obtained) {
+      _nearKey = false;
+      return;
+    }
+    const keyX = .36;
+    const keyY = .63;
+    final distance = math.sqrt(math.pow(_x - keyX, 2) + math.pow(_y - keyY, 2));
+    _nearKey = distance < .13;
+  }
+
+  void _collectKey2() {
+    if (!state.key2Available || state.key2Obtained || !_nearKey) return;
+    state.key2Available = false;
+    state.key2Obtained = true;
+    state.completePuzzle(bonus: 75);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(const SnackBar(content: Text('KEY 2 OBTENIDA — LA PUERTA DEL NIVEL 3 ESTÁ DESBLOQUEADA.')));
+    setState(() {});
+  }
+
+  void _checkLevel3DoorDistance() {
+    const doorX = .94;
+    const doorY = .66;
+    final distance = math.sqrt(math.pow(_x - doorX, 2) + math.pow(_y - doorY, 2));
+    _nearLevel3Door = distance < .12;
+  }
+
+  void _interact() {
+    if (_nearKey && state.key2Available && !state.key2Obtained) {
+      _collectKey2();
+      return;
+    }
+    if (_nearDoor != null) {
+      _goToDoor(_nearDoor!);
+      return;
+    }
+    if (_nearLevel3Door) {
+      _openLevel3Door();
+      return;
+    }
+    // El botón permanece visible como control fijo; fuera de rango no hace nada.
   }
 
   void _checkDoorDistance() {
@@ -270,8 +360,11 @@ class _Level02ScreenState extends State<Level02Screen>
           onKeyEvent: _handleKey,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final roomWidth = math.min(constraints.maxWidth - 32, 1180.0);
-              final roomHeight = math.min(constraints.maxHeight - 104, 700.0);
+              final roomWidth = math.min(1180.0, math.max(0.0, constraints.maxWidth - 16));
+              final availableHeight = math.max(220.0, constraints.maxHeight - 104);
+              // On phones keep a compact landscape-like playfield so the complete room
+              // stays visible instead of pushing scenery outside the viewport.
+              final roomHeight = math.min(availableHeight, math.min(700.0, roomWidth * .62));
 
               return Column(
                 children: [
@@ -300,7 +393,15 @@ class _Level02ScreenState extends State<Level02Screen>
                           doors: _doors,
                           onDoorTap: _goToDoor,
                           level3Unlocked: state.key2Obtained,
+                          key2Available: state.key2Available,
+                          nearKey: _nearKey,
+                          nearLevel3Door: _nearLevel3Door,
+                          onCollectKey2: _collectKey2,
+                          joystick: _joystick,
+                          onJoystickChanged: _joystickChanged,
+                          onJoystickReleased: _joystickReleased,
                           onLevel3DoorTap: _openLevel3Door,
+                          onInteract: _interact,
                         ),
                       ),
                     ),
@@ -365,7 +466,15 @@ class _Room extends StatelessWidget {
   final List<_DoorSpot> doors;
   final ValueChanged<int> onDoorTap;
   final bool level3Unlocked;
+  final bool key2Available;
+  final bool nearKey;
+  final bool nearLevel3Door;
+  final VoidCallback onCollectKey2;
+  final Offset joystick;
+  final void Function(Offset, Size) onJoystickChanged;
+  final VoidCallback onJoystickReleased;
   final VoidCallback onLevel3DoorTap;
+  final VoidCallback onInteract;
 
   const _Room({
     required this.x,
@@ -377,7 +486,15 @@ class _Room extends StatelessWidget {
     required this.doors,
     required this.onDoorTap,
     required this.level3Unlocked,
+    required this.key2Available,
+    required this.nearKey,
+    required this.nearLevel3Door,
+    required this.onCollectKey2,
+    required this.joystick,
+    required this.onJoystickChanged,
+    required this.onJoystickReleased,
     required this.onLevel3DoorTap,
+    required this.onInteract,
   });
 
   @override
@@ -394,14 +511,12 @@ class _Room extends StatelessWidget {
             children: [
               Positioned.fill(child: CustomPaint(painter: _RoomPainter())),
 
-              // Clue strip, matching the mockup's HUD style.
+              // Pista principal del Puzzle 1. Se mantiene arriba y limpia.
               Positioned(
-                top: c.maxHeight * .035,
+                top: c.maxHeight * .055,
                 left: c.maxWidth * .27,
                 right: c.maxWidth * .27,
-                child: _ClueStrip(
-                  text: 'PISTA 01  •  LA PUERTA CON LA LUZ ENCENDIDA ES LA CORRECTA',
-                ),
+                child: const _ClueStrip(text: 'PISTA: LA PUERTA CORRECTA ALUMBRA.'),
               ),
 
               // Three doors.
@@ -424,55 +539,62 @@ class _Room extends StatelessWidget {
                   ),
                 ),
 
-              // Left terminal.
+              // Salida al Nivel 3: integrada en el muro derecho, como una puerta
+              // real de servicio, separada de las tres puertas del Puzzle 1.
               Positioned(
-                left: c.maxWidth * .08,
-                top: c.maxHeight * .51,
-                child: const _Terminal(label: 'ACCESS'),
-              ),
-
-              // Central logic console.
-              Positioned(
-                left: c.maxWidth * .50 - 72,
-                top: c.maxHeight * .50,
-                child: const _LogicConsole(),
-              ),
-
-              // Right terminal.
-              Positioned(
-                left: c.maxWidth * .83,
-                top: c.maxHeight * .51,
-                child: const _Terminal(label: 'NEXUS'),
-              ),
-
-              // Small floor markings.
-              Positioned(
-                left: c.maxWidth * .43,
-                top: c.maxHeight * .82,
-                child: const Text(
-                  'LUNA // PLAYER 01',
-                  style: TextStyle(
-                    color: Color(0xFF52647C),
-                    fontSize: 10,
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              // Puerta de salida al Nivel 3. Al inicio permanece bloqueada;
-              // después de obtener KEY 2 se ilumina y permite continuar.
-              Positioned(
-                right: c.maxWidth * .025,
-                top: c.maxHeight * .38,
-                width: 170,
-                height: 220,
+                right: -2,
+                top: c.maxHeight * .25,
+                width: math.min(142, math.max(108, c.maxWidth * .20)),
+                height: math.min(178, math.max(148, c.maxHeight * .30)),
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: onLevel3DoorTap,
                   child: _Level3ExitDoor(
                     unlocked: level3Unlocked,
                     pulse: walkAnimation.value,
+                  ),
+                ),
+              ),
+
+              if (key2Available)
+                Positioned(
+                  left: c.maxWidth * .36,
+                  top: c.maxHeight * .63,
+                  child: const _KeyTable(),
+                ),
+
+              // Mobile joystick. It is intentionally large and translucent so it can be used
+              // comfortably with a thumb without hiding the puzzle room.
+              Positioned(
+                left: 18,
+                bottom: 18,
+                width: math.min(142, c.maxWidth * .24),
+                height: math.min(142, c.maxWidth * .24),
+                child: LayoutBuilder(
+                  builder: (context, jc) => GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onPanStart: (details) => onJoystickChanged(details.localPosition, jc.biggest),
+                    onPanUpdate: (details) => onJoystickChanged(details.localPosition, jc.biggest),
+                    onPanEnd: (_) => onJoystickReleased(),
+                    onPanCancel: onJoystickReleased,
+                    child: _Joystick(thumb: joystick),
+                  ),
+                ),
+              ),
+
+              // Botón de interacción fijo: siempre visible en el lado derecho.
+              // Se ilumina cuando Luna está cerca de la llave o de una puerta.
+              Positioned(
+                right: 18,
+                bottom: 18,
+                width: math.min(142, c.maxWidth * .24),
+                height: math.min(142, c.maxWidth * .24),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: _InteractButton(
+                    onPressed: onInteract,
+                  active: nearKey || nearDoor != null || nearLevel3Door,
+                  label: nearKey ? 'COGER' : (nearDoor != null || nearLevel3Door ? 'USAR' : 'INTERACT'),
                   ),
                 ),
               ),
@@ -520,9 +642,178 @@ class _Room extends StatelessWidget {
                     ),
                   ),
                 ),
+
+              if (key2Available && nearKey)
+                Positioned(
+                  left: c.maxWidth * .36 - 70,
+                  top: c.maxHeight * .63 - 56,
+                  width: 140,
+                  child: const IgnorePointer(
+                    child: Text(
+                      'KEY 2 // INTERACTÚA',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFFFACC15),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _KeyTable extends StatelessWidget {
+  const _KeyTable();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 178, height: 126,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(left: 12, right: 12, bottom: 8, height: 48, child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF9A673E), Color(0xFF3B2114)]),
+              borderRadius: BorderRadius.circular(7),
+              border: Border.all(color: const Color(0xFFD19A63), width: 2),
+              boxShadow: const [BoxShadow(color: Colors.black87, blurRadius: 7, offset: Offset(0, 5))],
+            ),
+          )),
+          Positioned(left: 18, right: 18, bottom: 43, height: 14, child: DecoratedBox(
+            decoration: BoxDecoration(color: const Color(0xFFC28651), borderRadius: BorderRadius.circular(5), border: Border.all(color: const Color(0xFFE1B27D))),
+          )),
+          Positioned(left: 24, bottom: 0, child: _TableLeg()),
+          Positioned(right: 24, bottom: 0, child: _TableLeg()),
+          Positioned(left: 51, top: 24, child: Transform.rotate(
+            angle: -.18,
+            child: Container(
+              width: 54, height: 42,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9),
+                gradient: const LinearGradient(colors: [Color(0xFFFFE98A), Color(0xFFF2B91C)]),
+                border: Border.all(color: const Color(0xFFFFF8C9), width: 2),
+                boxShadow: [BoxShadow(color: const Color(0xFFFACC15).withOpacity(.75), blurRadius: 20, spreadRadius: 3)],
+              ),
+              child: const Icon(Icons.key_rounded, color: Color(0xFF6B4300), size: 28),
+            ),
+          )),
+          const Positioned(left: 39, top: 1, right: 39, child: Text('KEY 2', textAlign: TextAlign.center, style: TextStyle(color: Color(0xFFFFE78A), fontFamily: 'monospace', fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1.5))),
+        ],
+      ),
+    );
+  }
+}
+
+class _TableLeg extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Container(width: 10, height: 35, decoration: BoxDecoration(color: const Color(0xFF25140C), border: Border.all(color: const Color(0xFF5A341E))));
+}
+
+class _InteractButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final bool active;
+  final String label;
+
+  const _InteractButton({required this.onPressed, this.active = false, this.label = 'COGER'});
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = active ? const Color(0xFFFACC15) : const Color(0xFF7890A8);
+    return Semantics(
+      button: true,
+      label: active ? label : 'Interactuar',
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onPressed,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: active
+                  ? const [Color(0xFF263344), Color(0xDD0B111A)]
+                  : const [Color(0xFF1B2634), Color(0xCC080D14)],
+            ),
+            border: Border.all(color: accent, width: active ? 3 : 2),
+            boxShadow: [
+              const BoxShadow(color: Colors.black87, blurRadius: 0, spreadRadius: 3),
+              if (active) BoxShadow(color: accent.withOpacity(.38), blurRadius: 24, spreadRadius: 3),
+            ],
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 58, height: 58,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: accent.withOpacity(.35)),
+                  color: const Color(0xFF07101A),
+                ),
+                child: Icon(active ? Icons.pan_tool_alt_rounded : Icons.touch_app_rounded, color: accent, size: 30),
+              ),
+              Positioned(
+                bottom: 13,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xF2071018),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: accent.withOpacity(.65)),
+                  ),
+                  child: Text(
+                    active ? label : 'INTERACT',
+                    style: TextStyle(color: accent, fontFamily: 'monospace', fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: .9),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Joystick extends StatelessWidget {
+  final Offset thumb;
+  const _Joystick({required this.thumb});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: const Color(0xAA07101B),
+        border: Border.all(color: const Color(0xFF55D6FF), width: 2),
+        boxShadow: const [BoxShadow(color: Colors.black87, blurRadius: 0, spreadRadius: 2)],
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          const Icon(Icons.add, color: Color(0xFF35506B), size: 48),
+          Transform.translate(
+            offset: thumb,
+            child: Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xDD55D6FF),
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: const Icon(Icons.gamepad, color: Color(0xFF06101A), size: 22),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -613,6 +904,17 @@ class _Level3ExitDoor extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            unlocked ? 'TOCA PARA ENTRAR' : 'PUERTA SELLADA',
+            style: TextStyle(
+              color: unlocked ? const Color(0xFF7DD3FC) : Colors.white38,
+              fontFamily: 'monospace',
+              fontSize: 9,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
             ),
           ),
         ],
@@ -745,6 +1047,29 @@ class _ClueStrip extends StatelessWidget {
   }
 }
 
+class _RoomSign extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 34,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xD9081018),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: const Color(0xFF38516A)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.warning_amber_rounded, size: 14, color: Color(0xFFFACC15)),
+          SizedBox(width: 7),
+          Text('CONTROL ROOM 02  •  NEXUS', style: TextStyle(color: Color(0xFFB8C9DC), fontFamily: 'monospace', fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.2)),
+        ],
+      ),
+    );
+  }
+}
+
 class _Terminal extends StatelessWidget {
   final String label;
   const _Terminal({required this.label});
@@ -752,11 +1077,13 @@ class _Terminal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 92,
-      height: 58,
+      width: 112,
+      height: 72,
       decoration: BoxDecoration(
-        color: const Color(0xFF0A111D),
-        border: Border.all(color: const Color(0xFF33445E)),
+        gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF1B2A3B), Color(0xFF080F17)]),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF48627C), width: 2),
+        boxShadow: const [BoxShadow(color: Colors.black87, blurRadius: 8, offset: Offset(0, 5))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -795,11 +1122,13 @@ class _LogicConsole extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 144,
-      height: 86,
+      width: 168,
+      height: 98,
       decoration: BoxDecoration(
-        color: const Color(0xFF07101B),
-        border: Border.all(color: const Color(0xFF31465F)),
+        gradient: const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF24384C), Color(0xFF08111B)]),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF52718E), width: 2),
+        boxShadow: const [BoxShadow(color: Colors.black87, blurRadius: 10, offset: Offset(0, 6))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -899,95 +1228,45 @@ class _Key extends StatelessWidget {
 class _RoomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final p = Paint()..isAntiAlias = false;
-    p.color = const Color(0xFF101A28);
+    final p = Paint()..isAntiAlias = true;
+    final wallBottom = size.height * .47;
+
+    // Clean, open room: keep only the architectural surfaces so the doors,
+    // puzzle elements and key table remain the visual focus.
+    p.color = const Color(0xFF0B1320);
     canvas.drawRect(Offset.zero & size, p);
 
-    // Back wall: clean repeating pixel tiles.
-    const tileW = 56.0;
-    const tileH = 36.0;
-    final wallTop = 0.0;
-    final wallBottom = size.height * .48;
-    for (double y = wallTop; y < wallBottom; y += tileH) {
-      for (double x = 0; x < size.width; x += tileW) {
-        final odd = ((x / tileW).floor() + (y / tileH).floor()) % 2 == 0;
-        p.color = odd ? const Color(0xFF1B2A3C) : const Color(0xFF162437);
-        canvas.drawRect(Rect.fromLTWH(x + 1, y + 1, tileW - 2, tileH - 2), p);
-      }
-    }
-
-    // Floor: large square metal tiles, with a central walkway.
-    p.color = const Color(0xFF0A121D);
-    canvas.drawRect(Rect.fromLTWH(0, wallBottom, size.width, size.height - wallBottom), p);
-    for (double y = wallBottom; y < size.height; y += 42) {
-      for (double x = 0; x < size.width; x += 70) {
-        final odd = ((x / 70).floor() + ((y - wallBottom) / 42).floor()) % 2 == 0;
-        p.color = odd ? const Color(0xFF142436) : const Color(0xFF102033);
-        canvas.drawRect(Rect.fromLTWH(x + 2, y + 2, 66, 38), p);
-      }
-    }
-
-    final seam = Paint()..color = const Color(0xFF07101A)..strokeWidth = 2..isAntiAlias = false;
-    for (double x = 0; x <= size.width; x += 70) canvas.drawLine(Offset(x, wallBottom), Offset(x, size.height), seam);
-    for (double y = wallBottom; y <= size.height; y += 42) canvas.drawLine(Offset(0, y), Offset(size.width, y), seam);
-
-    // Back wall base trim.
+    // Back wall.
+    p.color = const Color(0xFF182638);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, wallBottom), p);
     p.color = const Color(0xFF263B52);
-    canvas.drawRect(Rect.fromLTWH(0, wallBottom - 10, size.width, 10), p);
-    p.color = const Color(0xFF0A111B);
+    canvas.drawRect(Rect.fromLTWH(0, wallBottom - 14, size.width, 14), p);
+    p.color = const Color(0xFF0A111A);
     canvas.drawRect(Rect.fromLTWH(0, wallBottom - 4, size.width, 4), p);
 
-    // Central floor lane: makes the room read as a room instead of a giant platform.
-    final lane = Rect.fromLTWH(size.width * .36, wallBottom + 4, size.width * .28, size.height - wallBottom - 8);
-    p.color = const Color(0xFF182B3E);
-    canvas.drawRect(lane, p);
-    final laneEdge = Paint()..color = const Color(0xFF31506B)..style = PaintingStyle.stroke..strokeWidth = 3..isAntiAlias = false;
-    canvas.drawRect(lane, laneEdge);
-    final stripe = Paint()..color = const Color(0xFF2D4A63)..isAntiAlias = false;
-    for (double y = lane.top + 18; y < lane.bottom; y += 54) {
-      canvas.drawRect(Rect.fromLTWH(lane.left + 14, y, lane.width - 28, 5), stripe);
-    }
-
-    // Side control stations.
-    _drawStation(canvas, Offset(size.width * .06, size.height * .55), 112, 78);
-    _drawStation(canvas, Offset(size.width * .78, size.height * .55), 112, 78);
-
-    // Central console pedestal.
-    final console = Rect.fromLTWH(size.width * .43, size.height * .60, size.width * .14, 70);
-    p.color = const Color(0xFF20384F);
-    canvas.drawRect(console, p);
-    p.color = const Color(0xFF0B1521);
-    canvas.drawRect(Rect.fromLTWH(console.left + 7, console.top + 7, console.width - 14, console.height - 14), p);
-
-    // Ceiling lights: three simple pixel strips.
-    for (var i = 0; i < 5; i++) {
-      final lx = size.width * (.14 + i * .18);
-      p.color = i == 2 ? const Color(0xFF3D9EC3) : const Color(0xFF2B3E52);
-      canvas.drawRect(Rect.fromLTWH(lx, 12, 42, 6), p);
-      if (i == 2) {
-        p.color = const Color(0xFF75D9F5);
-        canvas.drawRect(Rect.fromLTWH(lx + 7, 14, 28, 2), p);
-      }
-    }
-  }
-
-  void _drawStation(Canvas canvas, Offset o, double w, double h) {
-    final p = Paint()..isAntiAlias = false;
-    p.color = const Color(0xFF0A1420);
-    canvas.drawRect(Rect.fromLTWH(o.dx, o.dy, w, h), p);
-    p.color = const Color(0xFF3A5872);
+    // Simple floor with subtle seams.
+    p.color = const Color(0xFF0A121C);
+    canvas.drawRect(Rect.fromLTWH(0, wallBottom, size.width, size.height - wallBottom), p);
     p.style = PaintingStyle.stroke;
-    p.strokeWidth = 3;
-    canvas.drawRect(Rect.fromLTWH(o.dx, o.dy, w, h), p);
+    p.strokeWidth = 1;
+    p.color = const Color(0xFF17283A);
+    for (var i = 1; i < 4; i++) {
+      final y = wallBottom + (size.height - wallBottom) * i / 4;
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), p);
+    }
+    for (var i = 1; i < 5; i++) {
+      final x = size.width * i / 5;
+      canvas.drawLine(Offset(x, wallBottom), Offset(x, size.height), p);
+    }
     p.style = PaintingStyle.fill;
-    p.color = const Color(0xFF14283B);
-    canvas.drawRect(Rect.fromLTWH(o.dx + 12, o.dy + 12, w - 24, 30), p);
-    p.color = const Color(0xFF55D6FF);
-    canvas.drawRect(Rect.fromLTWH(o.dx + 18, o.dy + 19, 42, 4), p);
-    p.color = const Color(0xFF34D399);
-    canvas.drawRect(Rect.fromLTWH(o.dx + w - 30, o.dy + 18, 7, 7), p);
-    p.color = const Color(0xFF4A627A);
-    canvas.drawRect(Rect.fromLTWH(o.dx + 14, o.dy + 52, w - 28, 5), p);
+
+    // A restrained central path gives orientation without clutter.
+    p.color = const Color(0xFF101D2B);
+    final path = Rect.fromLTWH(size.width * .40, wallBottom, size.width * .20, size.height - wallBottom);
+    canvas.drawRect(path, p);
+    p.color = const Color(0xFF1B3044);
+    canvas.drawRect(Rect.fromLTWH(path.left, wallBottom, 2, path.height), p);
+    canvas.drawRect(Rect.fromLTWH(path.right - 2, wallBottom, 2, path.height), p);
   }
 
   @override
@@ -1004,39 +1283,40 @@ class _DoorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final outer = Paint()..color = const Color(0xFF070C14)..isAntiAlias = false;
-    final frame = Paint()..color = color.withOpacity(.70)..style = PaintingStyle.stroke..strokeWidth = 4..isAntiAlias = false;
-    final inner = Paint()..color = color.withOpacity(correct ? (.18 + pulse * .10) : .07)..isAntiAlias = false;
+    final p = Paint()..isAntiAlias = true;
+    final frame = RRect.fromRectAndRadius(Rect.fromLTWH(9, 6, size.width - 18, size.height - 10), const Radius.circular(5));
+    p.color = const Color(0xFF050A11); canvas.drawRRect(frame, p);
+    p.style = PaintingStyle.stroke; p.strokeWidth = 3; p.color = color.withOpacity(.85); canvas.drawRRect(frame, p);
+    p.style = PaintingStyle.fill;
 
-    final door = Rect.fromLTWH(17, 8, size.width - 34, size.height - 16);
-    canvas.drawRect(door, outer);
-    canvas.drawRect(door, frame);
-    canvas.drawRect(Rect.fromLTWH(24, 15, door.width - 14, door.height - 22), inner);
+    final inner = Rect.fromLTWH(17, 15, size.width - 34, size.height - 27);
+    p.color = color.withOpacity(correct ? .18 + pulse * .08 : .06); canvas.drawRect(inner, p);
+    p.style = PaintingStyle.stroke; p.strokeWidth = 2; p.color = color.withOpacity(.45); canvas.drawRect(inner, p); p.style = PaintingStyle.fill;
 
-    // Chunky door panels.
-    final panel = Paint()..color = color.withOpacity(correct ? .18 : .08)..isAntiAlias = false;
-    for (var i = 0; i < 3; i++) {
-      canvas.drawRect(Rect.fromLTWH(29, 27 + i * 17.0, door.width - 24, 10), panel);
-    }
+    // Heavy vertical door ribs and center seam.
+    p.color = color.withOpacity(.20);
+    for (var i = 0; i < 4; i++) canvas.drawRect(Rect.fromLTWH(inner.left + 7 + i * (inner.width - 14) / 4, inner.top + 5, 3, inner.height - 10), p);
+    p.color = color.withOpacity(.55); canvas.drawRect(Rect.fromLTWH(inner.center.dx - 1, inner.top, 2, inner.height), p);
 
-    // Only the correct door gets a visible light.
+    // Door control panel.
+    p.color = const Color(0xFF080F17); canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(inner.right - 19, inner.center.dy - 13, 10, 26), const Radius.circular(2)), p);
+    p.color = correct ? color : const Color(0xFF4B5A6A); canvas.drawCircle(Offset(inner.right - 14, inner.center.dy - 5), 2.5, p);
+    p.color = const Color(0xFF26384A); canvas.drawRect(Rect.fromLTWH(inner.right - 17, inner.center.dy + 3, 6, 2), p);
+
+    // Top status light.
     if (correct) {
-      final glow = Paint()..color = color.withOpacity(.20 + pulse * .12)..isAntiAlias = false;
-      canvas.drawRect(Rect.fromLTWH(size.width / 2 - 11, 0, 22, 8), glow);
-      final lamp = Paint()..color = color.withOpacity(.70 + pulse * .30)..isAntiAlias = false;
-      canvas.drawRect(Rect.fromLTWH(size.width / 2 - 5, 2, 10, 4), lamp);
-      canvas.drawRect(Rect.fromLTWH(size.width / 2 - 9, 0, 18, 2), lamp);
+      p.color = color.withOpacity(.28 + pulse * .18); canvas.drawRect(Rect.fromLTWH(size.width * .30, 0, size.width * .40, 7), p);
+      p.color = color.withOpacity(.9); canvas.drawRect(Rect.fromLTWH(size.width * .40, 2, size.width * .20, 3), p);
     }
 
     if (opening) {
-      final dark = Paint()..color = const Color(0xFF02050A)..isAntiAlias = false;
-      canvas.drawRect(Rect.fromLTWH(30, 20, door.width - 26, door.height - 34), dark);
+      p.color = const Color(0xFF02050A); canvas.drawRect(inner, p);
+      p.color = color.withOpacity(.35); canvas.drawRect(Rect.fromLTWH(inner.center.dx - 2, inner.top, 4, inner.height), p);
     }
   }
 
   @override
-  bool shouldRepaint(covariant _DoorPainter oldDelegate) =>
-      oldDelegate.opening != opening || oldDelegate.color != color || oldDelegate.correct != correct || oldDelegate.pulse != pulse;
+  bool shouldRepaint(covariant _DoorPainter oldDelegate) => oldDelegate.opening != opening || oldDelegate.color != color || oldDelegate.correct != correct || oldDelegate.pulse != pulse;
 }
 
 class _LunaPainter extends CustomPainter {

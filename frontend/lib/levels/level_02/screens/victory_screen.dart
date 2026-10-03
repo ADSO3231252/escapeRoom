@@ -20,13 +20,13 @@ class VictoryScreen extends StatelessWidget {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Text('★ ★ ★', style: TextStyle(fontFamily: 'monospace', color: Color(0xFFFACC15), fontSize: 22, letterSpacing: 7)),
                 const SizedBox(height: 16),
-                const PixelTitle(text: 'KEY 2 OBTENIDA', subtitle: 'EL ACCESO AL NIVEL 3 SIGUE BLOQUEADO'),
+                const PixelTitle(text: 'KEY 2 DISPONIBLE', subtitle: 'VUELVE A LA SALA Y CÓGELA DE LA MESA'),
                 const SizedBox(height: 24),
                 Container(
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(color: const Color(0xFF0A1620), border: Border.all(color: const Color(0xFF34D399), width: 2)),
                   child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('[ KEY 2 ]', style: TextStyle(fontFamily: 'monospace', color: Color(0xFFFACC15), fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 2)),
+                    Text('[ KEY 2 // TABLE ]', style: TextStyle(fontFamily: 'monospace', color: Color(0xFFFACC15), fontSize: 22, fontWeight: FontWeight.w900, letterSpacing: 2)),
                   ]),
                 ),
                 const SizedBox(height: 18),

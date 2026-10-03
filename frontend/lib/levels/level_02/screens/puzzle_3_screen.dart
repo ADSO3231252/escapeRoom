@@ -4,7 +4,7 @@ import '../logic/puzzle_3_logic.dart';
 import '../models/level_02_state.dart';
 import '../widgets/keypad.dart';
 import '../widgets/pixel_ui.dart';
-import 'victory_screen.dart';
+import 'level_02_screen.dart';
 
 class Puzzle3Screen extends StatefulWidget {
   final Level02State state;
@@ -61,8 +61,11 @@ class _Puzzle3ScreenState extends State<Puzzle3Screen> {
     if (correct) {
       widget.state.stopTimer();
       widget.state.puzzle3Solved = true;
-      // El último puzzle entrega únicamente la KEY 2.
-      widget.state.key2Obtained = true;
+      // Al resolver el último puzzle, la KEY 2 aparece físicamente en la mesa.
+      // El jugador todavía debe volver a la sala y pulsar COJER KEY 2.
+      widget.state.key2Available = true;
+      widget.state.key2Obtained = false;
+      widget.state.notifyListeners();
       widget.state.completePuzzle(bonus: 100);
 
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -70,7 +73,7 @@ class _Puzzle3ScreenState extends State<Puzzle3Screen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => VictoryScreen(state: widget.state),
+            builder: (_) => Level02Screen.withState(state: widget.state),
           ),
         );
       });
@@ -119,11 +122,11 @@ class _Puzzle3ScreenState extends State<Puzzle3Screen> {
       Expanded(
         child: Center(
           child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(12),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 760),
             child: PixelPanel(child: Padding(
-                padding: const EdgeInsets.all(26),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     const Text(

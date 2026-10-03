@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'tutorial_screen.dart';
 
+import 'tutorial_screen.dart';
+import 'options_screen.dart';
+
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
@@ -470,7 +473,14 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: _InteractiveArea(
                       glowColor: const Color(0xFF00D9FF),
                       borderRadius: 12,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OptionsScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

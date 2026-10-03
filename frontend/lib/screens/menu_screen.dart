@@ -2,8 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'tutorial_screen.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
+
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  bool _showSoundPanel = false;
+
+  double _musicVolume = 0.70;
+  double _effectsVolume = 0.85;
+
+  double _previousMusicVolume = 0.70;
+  double _previousEffectsVolume = 0.85;
+
+  bool _isMuted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +54,12 @@ class MenuScreen extends StatelessWidget {
                 color: const Color(0xFF22CFFF),
               ),
             ),
+          ),
+        );
+      },
+    );
+  }
+}
 
             // CONTENIDO
             Center(
@@ -296,7 +317,20 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ],
+
+            // ========================================================
+            // BRILLO
+            // ========================================================
+            boxShadow: _isActive
+                ? [
+                    BoxShadow(
+                      color: widget.glowColor.withValues(alpha: 0.40),
+                      blurRadius: 16,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : [],
+          ),
         ),
       ),
     );

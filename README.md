@@ -1,41 +1,30 @@
-# NEXUS-9 — Escape Room — Nivel 1
+# NEXUS-9 — Escape Room — Level 1
 
-Implementación en Flutter + Dart del Nivel 1 "El Despertar", basada en los mockups de Document 14 y en el Documento Maestro K-9.
+Flutter + Dart implementation of Level 1 "The Awakening" (El Despertar), based on the mockups from Document 14 and the K-9 Master Document.
 
-## Flujo
+## Game Flow
 
-1. Selección de dificultad.
-2. Tutorial interactivo.
+1. Difficulty selection.
+2. Interactive tutorial.
 3. Guided Tour.
-4. Nivel 1 — El Despertar.
-5. Puzzle 1: ordenar instrucciones `C → A → B → D`.
-6. Puzzle 2: caja de seguridad con código `0004`.
-7. Obtención de `LLAVE 1`.
-8. Apertura de la puerta.
-9. Pantalla `NIVEL 1 COMPLETADO`.
-10. Autosave y estado preparado para desbloquear Nivel 2.
+4. Level 1 — The Awakening.
+5. Puzzle 1: Sort instructions in sequence `C → A → B → D`.
+6. Puzzle 2: Safe box with code `0004`.
+7. Obtain `KEY 1` (LLAVE 1).
+8. Unlock the door.
+9. `LEVEL 1 COMPLETED` screen.
+10. Autosave and state prepared to unlock Level 2.
 
-## Dificultades
+## Difficulty Levels
 
-- Fácil: 90 minutos.
-- Normal: 60 minutos.
-- Difícil: 40 minutos.
+- Easy: 90 minutes.
+- Normal: 60 minutes.
+- Hard: 40 minutes.
 
-El documento fuente indica que la historia y el orden son iguales y que la dificultad modifica tiempo, pistas y complejidad. En esta implementación la lógica del Nivel 1 mantiene el mismo puzzle y deja el sistema de pistas preparado para ampliarlo.
+According to the source document, the storyline and sequence remain identical across all difficulties, while difficulty settings adjust time limits, hints, and complexity. In this implementation, Level 1 retains the same core puzzles and leaves the hint system ready for future expansion.
 
-## Ejecutar
+## Running the Project
 
 ```bash
 flutter pub get
 flutter run
-```
-
-Para Android:
-
-```bash
-flutter build apk
-```
-
-## Nota
-
-Los mockups no entregan archivos de arte separados. Por eso el mapa 2D está construido con widgets y `CustomPainter` en Dart, manteniendo la composición visual: laboratorio, cama, servidores, terminal, caja, puerta, Luna, HUD y paneles cian/neón.

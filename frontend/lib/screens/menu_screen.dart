@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'tutorial_screen.dart';
 
+import 'tutorial_screen.dart';
+import 'options_screen.dart';
+
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
@@ -111,7 +114,35 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                  // ==================================================
+                  // CONFIGURACIÓN
+                  // ==================================================
+                  Positioned(
+                    left: 1771 / 1920 * width,
+                    top: 47 / 1080 * height,
+                    width: 90 / 1920 * width,
+                    height: 90 / 1080 * height,
+                    child: _InteractiveArea(
+                      glowColor: const Color(0xFF00D9FF),
+                      borderRadius: 12,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OptionsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 
                     const Text(
                       'LUNA',

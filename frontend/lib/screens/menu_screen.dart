@@ -26,437 +26,89 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              final height = constraints.maxHeight;
+      backgroundColor: const Color(0xFF07111C),
 
-              final scale = width / 1920;
+      body: SafeArea(
+        child: Stack(
+          children: [
 
-              // ==========================================================
-              // PANEL DE SONIDO
-              // ==========================================================
-              //
-              // El panel es pequeño en pantallas grandes y se adapta
-              // proporcionalmente en pantallas pequeñas.
-              //
-              final panelWidth = (width * 0.19).clamp(180.0, 360.0);
+            // FONDO
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF0B1B2B),
+                    Color(0xFF07111C),
+                    Color(0xFF03080D),
+                  ],
+                ),
+              ),
+            ),
 
-              final panelHeight = (height * 0.23).clamp(155.0, 250.0);
+            // DECORACIÓN SUPERIOR
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 4,
+                color: const Color(0xFF22CFFF),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
-              return Stack(
-                children: [
-                  // ==================================================
-                  // IMAGEN COMPLETA DEL MAIN MENU
-                  // ==================================================
+            // CONTENIDO
+            Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(25),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/backgrounds/menu_game.png',
-                      fit: BoxFit.fill,
+                    // PEQUEÑO TEXTO
+                    const Text(
+                      'NEXUS-9',
+                      style: TextStyle(
+                        color: Color(0xFF55DFFF),
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 5,
+                      ),
                     ),
-                  ),
 
-                  // ==================================================
-                  // NUEVA PARTIDA
-                  // ==================================================
-                  Positioned(
-                    left: 130 / 1920 * width,
-                    top: 332 / 1080 * height,
-                    width: 428 / 1920 * width,
-                    height: 80 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFF00D9FF),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration: const Duration(
-                              milliseconds: 900,
-                            ),
-                            reverseTransitionDuration: const Duration(
-                              milliseconds: 900,
-                            ),
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                                  return const TutorialScreen();
-                                },
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  final curvedAnimation = CurvedAnimation(
-                                    parent: animation,
-                                    curve: Curves.easeInOutCubic,
-                                  );
+                    const SizedBox(height: 10),
 
-                                  return FadeTransition(
-                                    opacity: curvedAnimation,
-                                    child: SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0.08, 0),
-                                        end: Offset.zero,
-                                      ).animate(curvedAnimation),
-                                      child: child,
-                                    ),
-                                  );
-                                },
+                    // LUNA
+                    Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF102638),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFF267B9C),
+                          width: 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x5500CFFF),
+                            blurRadius: 25,
+                            spreadRadius: 3,
                           ),
-                        );
-                      },
-                    ),
-                  ),
-
-                  // ==================================================
-                  // CONTINUAR
-                  // ==================================================
-                  Positioned(
-                    left: 130 / 1920 * width,
-                    top: 427 / 1080 * height,
-                    width: 428 / 1920 * width,
-                    height: 80 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFF00D9FF),
-                      onTap: () {},
-                    ),
-                  ),
-
-                  // ==================================================
-                  // RANKING
-                  // ==================================================
-                  Positioned(
-                    left: 130 / 1920 * width,
-                    top: 527 / 1080 * height,
-                    width: 428 / 1920 * width,
-                    height: 80 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFF00D9FF),
-                      onTap: () {},
-                    ),
-                  ),
-
-                  // ==================================================
-                  // OPCIONES
-                  // ==================================================
-                  Positioned(
-                    left: 130 / 1920 * width,
-                    top: 627 / 1080 * height,
-                    width: 428 / 1920 * width,
-                    height: 80 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFF00D9FF),
-                      onTap: () {},
-                    ),
-                  ),
-
-                  // ==================================================
-                  // SALIR
-                  // ==================================================
-                  Positioned(
-                    left: 130 / 1920 * width,
-                    top: 725 / 1080 * height,
-                    width: 428 / 1920 * width,
-                    height: 80 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFFFF3030),
-                      onTap: () {
-                        _showExitDialog(context);
-                      },
-                    ),
-                  ),
-
-                  // ==================================================
-                  // AUDIO
-                  // ==================================================
-                  Positioned(
-                    left: 1635 / 1920 * width,
-                    top: 47 / 1080 * height,
-                    width: 90 / 1920 * width,
-                    height: 90 / 1080 * height,
-                    child: _InteractiveArea(
-                      glowColor: const Color(0xFF00D9FF),
-                      borderRadius: 12,
-                      onTap: () {
-                        setState(() {
-                          _showSoundPanel = !_showSoundPanel;
-                        });
-                      },
-                    ),
-                  ),
-
-                  // ==================================================
-                  // PANEL DE SONIDO
-                  // ==================================================
-                  if (_showSoundPanel)
-                    Positioned(
-                      right: 20 * scale,
-                      top: 125 * scale,
-                      width: panelWidth,
-                      height: panelHeight,
-                      child: AnimatedOpacity(
-                        duration: const Duration(milliseconds: 300),
-                        opacity: _showSoundPanel ? 1.0 : 0.0,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12 * scale,
-                            vertical: 10 * scale,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF07131C)
-                                .withValues(alpha: 0.97),
-                            borderRadius: BorderRadius.circular(12 * scale),
-                            border: Border.all(
-                              color: const Color(0xFF00D9FF),
-                              width: 1.5,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF00D9FF)
-                                    .withValues(alpha: 0.22),
-                                blurRadius: 15,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ------------------------------------------
-                              // TÍTULO
-                              // ------------------------------------------
-
-                              Text(
-                                'SONIDO',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: (panelWidth * 0.055).clamp(
-                                    14.0,
-                                    20.0,
-                                  ),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-
-                              SizedBox(height: 7 * scale),
-
-                              // ------------------------------------------
-                              // MÚSICA
-                              // ------------------------------------------
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.music_note,
-                                    color: const Color(0xFF00D9FF),
-                                    size: (panelWidth * 0.055).clamp(
-                                      14.0,
-                                      18.0,
-                                    ),
-                                  ),
-
-                                  SizedBox(width: 6 * scale),
-
-                                  Expanded(
-                                    child: Text(
-                                      'Música',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: (panelWidth * 0.035).clamp(
-                                          9.0,
-                                          13.0,
-                                        ),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Text(
-                                    '${(_musicVolume * 100).round()}%',
-                                    style: TextStyle(
-                                      color: const Color(0xFF00D9FF),
-                                      fontSize: (panelWidth * 0.032).clamp(
-                                        9.0,
-                                        12.0,
-                                      ),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              // ------------------------------------------
-                              // SLIDER MÚSICA
-                              // ------------------------------------------
-                              SizedBox(height: 2 * scale),
-
-                              SizedBox(
-                                height: 22,
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: const Color(0xFF00D9FF),
-                                    inactiveTrackColor: Colors.white24,
-                                    thumbColor: const Color(0xFF00D9FF),
-                                    overlayColor: const Color(0xFF00D9FF)
-                                        .withValues(alpha: 0.12),
-                                    trackHeight: 3,
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 5,
-                                    ),
-                                  ),
-                                  child: Slider(
-                                    value: _musicVolume,
-                                    min: 0,
-                                    max: 1,
-                                    divisions: 100,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _musicVolume = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 6 * scale),
-
-                              // ------------------------------------------
-                              // EFECTOS
-                              // ------------------------------------------
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.volume_up,
-                                    color: const Color(0xFF00D9FF),
-                                    size: (panelWidth * 0.055).clamp(
-                                      14.0,
-                                      18.0,
-                                    ),
-                                  ),
-
-                                  SizedBox(width: 6 * scale),
-
-                                  Expanded(
-                                    child: Text(
-                                      'Efectos de sonido',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: (panelWidth * 0.032).clamp(
-                                          8.0,
-                                          12.0,
-                                        ),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Text(
-                                    '${(_effectsVolume * 100).round()}%',
-                                    style: TextStyle(
-                                      color: const Color(0xFF00D9FF),
-                                      fontSize: (panelWidth * 0.032).clamp(
-                                        9.0,
-                                        12.0,
-                                      ),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              // ------------------------------------------
-                              // SLIDER EFECTOS
-                              // ------------------------------------------
-                              SizedBox(height: 2 * scale),
-
-                              SizedBox(
-                                height: 22,
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: const Color(0xFF00D9FF),
-                                    inactiveTrackColor: Colors.white24,
-                                    thumbColor: const Color(0xFF00D9FF),
-                                    overlayColor: const Color(0xFF00D9FF)
-                                        .withValues(alpha: 0.12),
-                                    trackHeight: 3,
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 5,
-                                    ),
-                                  ),
-                                  child: Slider(
-                                    value: _effectsVolume,
-                                    min: 0,
-                                    max: 1,
-                                    divisions: 100,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _effectsVolume = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 7 * scale),
-
-                              // ------------------------------------------
-                              // SILENCIAR TODO
-                              // ------------------------------------------
-                              SizedBox(
-                                width: double.infinity,
-                                height: (panelHeight * 0.14).clamp(28.0, 36.0),
-                                child: OutlinedButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (_isMuted) {
-                                        _musicVolume = _previousMusicVolume;
-                                        _effectsVolume = _previousEffectsVolume;
-                                        _isMuted = false;
-                                      } else {
-                                        _previousMusicVolume = _musicVolume;
-                                        _previousEffectsVolume = _effectsVolume;
-
-                                        _musicVolume = 0;
-                                        _effectsVolume = 0;
-
-                                        _isMuted = true;
-                                      }
-                                    });
-                                  },
-                                  label: Text(
-                                    _isMuted
-                                        ? 'ACTIVAR SONIDO'
-                                        : 'SILENCIAR TODO',
-                                    style: TextStyle(
-                                      fontSize: (panelWidth * 0.028).clamp(
-                                        8.0,
-                                        11.0,
-                                      ),
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    padding: EdgeInsets.zero,
-                                    side: const BorderSide(
-                                      color: Color(0xFF00D9FF),
-                                      width: 1.2,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        ],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          '🐶',
+                          style: TextStyle(
+                            fontSize: 58,
                           ),
                         ),
                       ),
@@ -492,260 +144,209 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  // ================================================================
-  // CONFIRMACIÓN PARA SALIR
-  // ================================================================
-
-  static void _showExitDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: 'Exit',
-      barrierColor: Colors.black.withValues(alpha: 0.75),
-      transitionDuration: const Duration(milliseconds: 500),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return const SizedBox.shrink();
-      },
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final curvedAnimation = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutCubic,
-          reverseCurve: Curves.easeInCubic,
-        );
-
-        return FadeTransition(
-          opacity: curvedAnimation,
-          child: ScaleTransition(
-            scale: Tween<double>(
-              begin: 0.85,
-              end: 1.0,
-            ).animate(curvedAnimation),
-            child: Center(
-              child: Container(
-                width: 500,
-                padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF07131C),
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFFF3030), width: 2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFFF3030).withValues(alpha: 0.30),
-                      blurRadius: 30,
-                      spreadRadius: 2,
+                    const Text(
+                      'LUNA',
+                      style: TextStyle(
+                        color: Color(0xFF9FB6C7),
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 3,
+                      ),
                     ),
-                  ],
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.warning_amber_rounded,
-                        color: Color(0xFFFF3030),
-                        size: 52,
-                      ),
 
-                      const SizedBox(height: 18),
+                    const SizedBox(height: 25),
 
-                      const Text(
-                        'SALIR DEL JUEGO',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
-
-                      const SizedBox(height: 14),
-
-                      const Text(
-                        '¿Estás seguro de que quieres salir del juego?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
-                      ),
-
-                      const SizedBox(height: 30),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // CANCELAR
-                          SizedBox(
-                            width: 170,
-                            height: 50,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: const Color(0xFF00D9FF),
-                                side: const BorderSide(
-                                  color: Color(0xFF00D9FF),
-                                  width: 2,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: const Text(
-                                'CANCELAR',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(width: 20),
-
-                          // SALIR
-                          SizedBox(
-                            width: 170,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-
-                                // El cierre real de la aplicación
-                                // se implementará según la plataforma.
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFF3030),
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: const Text(
-                                'SALIR',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
+                    // TÍTULO
+                    const Text(
+                      'NEXUS-9',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 52,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 7,
+                        shadows: [
+                          Shadow(
+                            color: Color(0xFF00CFFF),
+                            blurRadius: 20,
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    const Text(
+                      'ESCAPE LABORATORY',
+                      style: TextStyle(
+                        color: Color(0xFF7893A5),
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 4,
+                      ),
+                    ),
+
+                    const SizedBox(height: 35),
+
+                    // PANEL
+                    Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(
+                        maxWidth: 450,
+                      ),
+                      padding: const EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0C1C2B),
+                        border: Border.all(
+                          color: const Color(0xFF24465D),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x44000000),
+                            blurRadius: 20,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+
+                          const Row(
+                            children: [
+                              Icon(
+                                Icons.terminal,
+                                color: Color(0xFF43D9FF),
+                                size: 18,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'CONTROL ROOM',
+                                style: TextStyle(
+                                  color: Color(0xFFB5C8D6),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Icons.circle,
+                                color: Color(0xFF39E6B0),
+                                size: 8,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'ONLINE',
+                                style: TextStyle(
+                                  color: Color(0xFF39E6B0),
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // NUEVA PARTIDA
+                          SizedBox(
+                            width: double.infinity,
+                            height: 62,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TutorialScreen(),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF079AC7),
+                                foregroundColor: Colors.white,
+                                elevation: 10,
+                                shadowColor: const Color(0xFF00CFFF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.play_arrow_rounded,
+                                    size: 28,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'NUEVA PARTIDA',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // ESTADOS
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _Estado(
+                          icon: Icons.shield_outlined,
+                          texto: 'SECURE',
+                        ),
+                        SizedBox(width: 30),
+                        _Estado(
+                          icon: Icons.bolt,
+                          texto: 'ONLINE',
+                        ),
+                        SizedBox(width: 30),
+                        _Estado(
+                          icon: Icons.pets,
+                          texto: 'LUNA',
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    const Text(
+                      'LUNA // PLAYER 01',
+                      style: TextStyle(
+                        color: Color(0xFF536D7E),
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 3,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    const Text(
+                      'SYSTEM READY',
+                      style: TextStyle(
+                        color: Color(0xFF39E6B0),
+                        fontSize: 9,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-// ==================================================================
-// ZONA INTERACTIVA
-// ==================================================================
-
-class _InteractiveArea extends StatefulWidget {
-  final Color glowColor;
-  final double borderRadius;
-  final VoidCallback onTap;
-
-  const _InteractiveArea({
-    required this.glowColor,
-    required this.onTap,
-    this.borderRadius = 8,
-  });
-
-  @override
-  State<_InteractiveArea> createState() => _InteractiveAreaState();
-}
-
-class _InteractiveAreaState extends State<_InteractiveArea> {
-  bool _isHovered = false;
-  bool _isPressed = false;
-
-  bool get _isActive => _isHovered || _isPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-
-      // ============================================================
-      // MOUSE ENTRA
-      // ============================================================
-      onEnter: (_) {
-        setState(() {
-          _isHovered = true;
-        });
-      },
-
-      // ============================================================
-      // MOUSE SALE
-      // ============================================================
-      onExit: (_) {
-        setState(() {
-          _isHovered = false;
-        });
-      },
-
-      child: GestureDetector(
-        // ============================================================
-        // PRESIONAR
-        // ============================================================
-
-        onTapDown: (_) {
-          setState(() {
-            _isPressed = true;
-          });
-        },
-
-        // ============================================================
-        // SOLTAR
-        // ============================================================
-        onTapUp: (_) {
-          setState(() {
-            _isPressed = false;
-          });
-        },
-
-        // ============================================================
-        // CANCELAR
-        // ============================================================
-        onTapCancel: () {
-          setState(() {
-            _isPressed = false;
-          });
-        },
-
-        // ============================================================
-        // CLICK
-        // ============================================================
-        onTap: widget.onTap,
-
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          curve: Curves.easeOut,
-
-          decoration: BoxDecoration(
-            color: _isActive
-                ? widget.glowColor.withValues(alpha: 0.08)
-                : Colors.transparent,
-
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-
-            // ========================================================
-            // BORDE
-            // ========================================================
-            border: Border.all(
-              color: _isActive
-                  ? widget.glowColor.withValues(alpha: 0.65)
-                  : Colors.transparent,
-              width: _isActive ? 2 : 0,
             ),
 
             // ========================================================
@@ -763,6 +364,44 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+// ----------------------------------------------------------
+// ESTADO
+// ----------------------------------------------------------
+
+class _Estado extends StatelessWidget {
+  final IconData icon;
+  final String texto;
+
+  const _Estado({
+    required this.icon,
+    required this.texto,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          color: const Color(0xFF43D9FF),
+          size: 19,
+        ),
+        const SizedBox(height: 5),
+        Text(
+          texto,
+          style: const TextStyle(
+            color: Color(0xFF657E8F),
+            fontSize: 8,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
     );
   }
 }

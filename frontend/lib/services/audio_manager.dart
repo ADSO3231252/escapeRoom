@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 
 class AudioManager {
   AudioManager._();
@@ -23,16 +24,14 @@ class AudioManager {
     try {
       await initialize();
 
-      if (_player.state == PlayerState.playing) {
-        return;
-      }
+      debugPrint('🎵 Intentando reproducir música...');
 
-      await _player.play(
-        AssetSource('audio/background_music.mp3'),
-      );
+      await _player.play(AssetSource('audio/background_music.mp3'));
+
+      debugPrint('🎵 play() terminó correctamente');
+      debugPrint('🎵 Estado: ${_player.state}');
     } catch (e) {
-      // El juego debe continuar aunque el audio falle.
-      print('No se pudo reproducir la música: $e');
+      debugPrint('❌ ERROR DE AUDIO: $e');
     }
   }
 

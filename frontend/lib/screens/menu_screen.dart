@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'tutorial_screen.dart';
+import '../services/audio_manager.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -58,11 +59,9 @@ class _MenuScreenState extends State<MenuScreen> {
                   // PANEL DE SONIDO
                   // ==================================================
 
-                  final panelWidth =
-                      (width * 0.19).clamp(180.0, 360.0);
+                  final panelWidth = (width * 0.19).clamp(180.0, 360.0);
 
-                  final panelHeight =
-                      (height * 0.23).clamp(155.0, 250.0);
+                  final panelHeight = (height * 0.23).clamp(155.0, 250.0);
 
                   return Stack(
                     fit: StackFit.expand,
@@ -81,7 +80,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // NUEVA PARTIDA
                       // ==================================================
-
                       Positioned(
                         left: 130 / 1920 * width,
                         top: 332 / 1080 * height,
@@ -90,43 +88,43 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: _InteractiveArea(
                           glowColor: const Color(0xFF00D9FF),
                           onTap: () {
+
                             Navigator.push(
                               context,
                               PageRouteBuilder(
-                                transitionDuration:
-                                    const Duration(milliseconds: 900),
-                                reverseTransitionDuration:
-                                    const Duration(milliseconds: 900),
-                                pageBuilder: (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                ) {
-                                  return const TutorialScreen();
-                                },
-                                transitionsBuilder: (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  final curvedAnimation =
-                                      CurvedAnimation(
-                                    parent: animation,
-                                    curve: Curves.easeInOutCubic,
-                                  );
+                                transitionDuration: const Duration(
+                                  milliseconds: 900,
+                                ),
+                                reverseTransitionDuration: const Duration(
+                                  milliseconds: 900,
+                                ),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                      return const TutorialScreen();
+                                    },
+                                transitionsBuilder:
+                                    (
+                                      context,
+                                      animation,
+                                      secondaryAnimation,
+                                      child,
+                                    ) {
+                                      final curvedAnimation = CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeInOutCubic,
+                                      );
 
-                                  return FadeTransition(
-                                    opacity: curvedAnimation,
-                                    child: SlideTransition(
-                                      position: Tween<Offset>(
-                                        begin: const Offset(0.08, 0),
-                                        end: Offset.zero,
-                                      ).animate(curvedAnimation),
-                                      child: child,
-                                    ),
-                                  );
-                                },
+                                      return FadeTransition(
+                                        opacity: curvedAnimation,
+                                        child: SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: const Offset(0.08, 0),
+                                            end: Offset.zero,
+                                          ).animate(curvedAnimation),
+                                          child: child,
+                                        ),
+                                      );
+                                    },
                               ),
                             );
                           },
@@ -136,7 +134,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // CONTINUAR
                       // ==================================================
-
                       Positioned(
                         left: 130 / 1920 * width,
                         top: 427 / 1080 * height,
@@ -151,7 +148,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // RANKING
                       // ==================================================
-
                       Positioned(
                         left: 130 / 1920 * width,
                         top: 527 / 1080 * height,
@@ -166,7 +162,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // OPCIONES
                       // ==================================================
-
                       Positioned(
                         left: 130 / 1920 * width,
                         top: 627 / 1080 * height,
@@ -181,7 +176,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // SALIR
                       // ==================================================
-
                       Positioned(
                         left: 130 / 1920 * width,
                         top: 725 / 1080 * height,
@@ -198,7 +192,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // AUDIO
                       // ==================================================
-
                       Positioned(
                         left: 1635 / 1920 * width,
                         top: 47 / 1080 * height,
@@ -218,7 +211,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // PANEL DE SONIDO
                       // ==================================================
-
                       if (_showSoundPanel)
                         Positioned(
                           right: 20 * scale,
@@ -226,8 +218,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           width: panelWidth,
                           height: panelHeight,
                           child: AnimatedOpacity(
-                            duration:
-                                const Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             opacity: _showSoundPanel ? 1.0 : 0.0,
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -237,8 +228,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               decoration: BoxDecoration(
                                 color: const Color(0xFF07131C)
                                     .withValues(alpha: 0.97),
-                                borderRadius:
-                                    BorderRadius.circular(12 * scale),
+                                borderRadius: BorderRadius.circular(12 * scale),
                                 border: Border.all(
                                   color: const Color(0xFF00D9FF),
                                   width: 1.5,
@@ -254,8 +244,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // ------------------------------------------
                                   // TÍTULO
@@ -265,8 +254,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                     'SONIDO',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: (panelWidth * 0.055)
-                                          .clamp(14.0, 20.0),
+                                      fontSize: (panelWidth * 0.055).clamp(
+                                        14.0,
+                                        20.0,
+                                      ),
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 1.2,
                                     ),
@@ -277,15 +268,15 @@ class _MenuScreenState extends State<MenuScreen> {
                                   // ------------------------------------------
                                   // MÚSICA
                                   // ------------------------------------------
-
                                   Row(
                                     children: [
                                       Icon(
                                         Icons.music_note,
-                                        color:
-                                            const Color(0xFF00D9FF),
-                                        size: (panelWidth * 0.055)
-                                            .clamp(14.0, 18.0),
+                                        color: const Color(0xFF00D9FF),
+                                        size: (panelWidth * 0.055).clamp(
+                                          14.0,
+                                          18.0,
+                                        ),
                                       ),
                                       SizedBox(width: 6 * scale),
                                       Expanded(
@@ -293,22 +284,20 @@ class _MenuScreenState extends State<MenuScreen> {
                                           'Música',
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize:
-                                                (panelWidth * 0.035)
-                                                    .clamp(9.0, 13.0),
-                                            fontWeight:
-                                                FontWeight.w500,
+                                            fontSize: (panelWidth * 0.035)
+                                                .clamp(9.0, 13.0),
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
                                       Text(
                                         '${(_musicVolume * 100).round()}%',
                                         style: TextStyle(
-                                          color:
-                                              const Color(0xFF00D9FF),
-                                          fontSize:
-                                              (panelWidth * 0.032)
-                                                  .clamp(9.0, 12.0),
+                                          color: const Color(0xFF00D9FF),
+                                          fontSize: (panelWidth * 0.032).clamp(
+                                            9.0,
+                                            12.0,
+                                          ),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -318,27 +307,21 @@ class _MenuScreenState extends State<MenuScreen> {
                                   // ------------------------------------------
                                   // SLIDER MÚSICA
                                   // ------------------------------------------
-
                                   SizedBox(height: 2 * scale),
 
                                   SizedBox(
                                     height: 22,
                                     child: SliderTheme(
-                                      data: SliderTheme.of(context)
-                                          .copyWith(
-                                        activeTrackColor:
-                                            const Color(0xFF00D9FF),
-                                        inactiveTrackColor:
-                                            Colors.white24,
-                                        thumbColor:
-                                            const Color(0xFF00D9FF),
-                                        overlayColor:
-                                            const Color(0xFF00D9FF)
-                                                .withValues(
-                                                    alpha: 0.12),
+                                      data: SliderTheme.of(context).copyWith(
+                                        activeTrackColor: const Color(
+                                          0xFF00D9FF,
+                                        ),
+                                        inactiveTrackColor: Colors.white24,
+                                        thumbColor: const Color(0xFF00D9FF),
+                                        overlayColor: const Color(0xFF00D9FF)
+                                            .withValues(alpha: 0.12),
                                         trackHeight: 3,
-                                        thumbShape:
-                                            const RoundSliderThumbShape(
+                                        thumbShape: const RoundSliderThumbShape(
                                           enabledThumbRadius: 5,
                                         ),
                                       ),
@@ -361,15 +344,15 @@ class _MenuScreenState extends State<MenuScreen> {
                                   // ------------------------------------------
                                   // EFECTOS
                                   // ------------------------------------------
-
                                   Row(
                                     children: [
                                       Icon(
                                         Icons.volume_up,
-                                        color:
-                                            const Color(0xFF00D9FF),
-                                        size: (panelWidth * 0.055)
-                                            .clamp(14.0, 18.0),
+                                        color: const Color(0xFF00D9FF),
+                                        size: (panelWidth * 0.055).clamp(
+                                          14.0,
+                                          18.0,
+                                        ),
                                       ),
                                       SizedBox(width: 6 * scale),
                                       Expanded(
@@ -377,22 +360,20 @@ class _MenuScreenState extends State<MenuScreen> {
                                           'Efectos de sonido',
                                           style: TextStyle(
                                             color: Colors.white,
-                                            fontSize:
-                                                (panelWidth * 0.032)
-                                                    .clamp(8.0, 12.0),
-                                            fontWeight:
-                                                FontWeight.w500,
+                                            fontSize: (panelWidth * 0.032)
+                                                .clamp(8.0, 12.0),
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
                                       Text(
                                         '${(_effectsVolume * 100).round()}%',
                                         style: TextStyle(
-                                          color:
-                                              const Color(0xFF00D9FF),
-                                          fontSize:
-                                              (panelWidth * 0.032)
-                                                  .clamp(9.0, 12.0),
+                                          color: const Color(0xFF00D9FF),
+                                          fontSize: (panelWidth * 0.032).clamp(
+                                            9.0,
+                                            12.0,
+                                          ),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -402,27 +383,21 @@ class _MenuScreenState extends State<MenuScreen> {
                                   // ------------------------------------------
                                   // SLIDER EFECTOS
                                   // ------------------------------------------
-
                                   SizedBox(height: 2 * scale),
 
                                   SizedBox(
                                     height: 22,
                                     child: SliderTheme(
-                                      data: SliderTheme.of(context)
-                                          .copyWith(
-                                        activeTrackColor:
-                                            const Color(0xFF00D9FF),
-                                        inactiveTrackColor:
-                                            Colors.white24,
-                                        thumbColor:
-                                            const Color(0xFF00D9FF),
-                                        overlayColor:
-                                            const Color(0xFF00D9FF)
-                                                .withValues(
-                                                    alpha: 0.12),
+                                      data: SliderTheme.of(context).copyWith(
+                                        activeTrackColor: const Color(
+                                          0xFF00D9FF,
+                                        ),
+                                        inactiveTrackColor: Colors.white24,
+                                        thumbColor: const Color(0xFF00D9FF),
+                                        overlayColor: const Color(0xFF00D9FF)
+                                            .withValues(alpha: 0.12),
                                         trackHeight: 3,
-                                        thumbShape:
-                                            const RoundSliderThumbShape(
+                                        thumbShape: const RoundSliderThumbShape(
                                           enabledThumbRadius: 5,
                                         ),
                                       ),
@@ -445,23 +420,22 @@ class _MenuScreenState extends State<MenuScreen> {
                                   // ------------------------------------------
                                   // SILENCIAR TODO
                                   // ------------------------------------------
-
                                   SizedBox(
                                     width: double.infinity,
-                                    height: (panelHeight * 0.14)
-                                        .clamp(28.0, 36.0),
+                                    height: (panelHeight * 0.14).clamp(
+                                      28.0,
+                                      36.0,
+                                    ),
                                     child: OutlinedButton.icon(
                                       onPressed: () {
                                         setState(() {
                                           if (_isMuted) {
-                                            _musicVolume =
-                                                _previousMusicVolume;
+                                            _musicVolume = _previousMusicVolume;
                                             _effectsVolume =
                                                 _previousEffectsVolume;
                                             _isMuted = false;
                                           } else {
-                                            _previousMusicVolume =
-                                                _musicVolume;
+                                            _previousMusicVolume = _musicVolume;
                                             _previousEffectsVolume =
                                                 _effectsVolume;
 
@@ -477,9 +451,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                             ? 'ACTIVAR SONIDO'
                                             : 'SILENCIAR TODO',
                                         style: TextStyle(
-                                          fontSize:
-                                              (panelWidth * 0.028)
-                                                  .clamp(8.0, 11.0),
+                                          fontSize: (panelWidth * 0.028).clamp(
+                                            8.0,
+                                            11.0,
+                                          ),
                                           fontWeight: FontWeight.bold,
                                           letterSpacing: 0.5,
                                         ),
@@ -491,10 +466,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                           color: Color(0xFF00D9FF),
                                           width: 1.2,
                                         ),
-                                        shape:
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -508,7 +483,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       // ==================================================
                       // CONFIGURACIÓN
                       // ==================================================
-
                       Positioned(
                         left: 1771 / 1920 * width,
                         top: 47 / 1080 * height,
@@ -545,12 +519,7 @@ class _MenuScreenState extends State<MenuScreen> {
       pageBuilder: (context, animation, secondaryAnimation) {
         return const SizedBox.shrink();
       },
-      transitionBuilder: (
-        context,
-        animation,
-        secondaryAnimation,
-        child,
-      ) {
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
         final curvedAnimation = CurvedAnimation(
           parent: animation,
           curve: Curves.easeOutCubic,
@@ -571,14 +540,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF07131C),
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                    color: const Color(0xFFFF3030),
-                    width: 2,
-                  ),
+                  border: Border.all(color: const Color(0xFFFF3030), width: 2),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFFF3030)
-                          .withValues(alpha: 0.30),
+                      color: const Color(0xFFFF3030).withValues(alpha: 0.30),
                       blurRadius: 30,
                       spreadRadius: 2,
                     ),
@@ -613,10 +578,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       const Text(
                         '¿Estás seguro de que quieres salir del juego?',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 16),
                       ),
 
                       const SizedBox(height: 30),
@@ -633,15 +595,13 @@ class _MenuScreenState extends State<MenuScreen> {
                                 Navigator.pop(context);
                               },
                               style: OutlinedButton.styleFrom(
-                                foregroundColor:
-                                    const Color(0xFF00D9FF),
+                                foregroundColor: const Color(0xFF00D9FF),
                                 side: const BorderSide(
                                   color: Color(0xFF00D9FF),
                                   width: 2,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               child: const Text(
@@ -668,13 +628,11 @@ class _MenuScreenState extends State<MenuScreen> {
                                 // se implementará según la plataforma.
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color(0xFFFF3030),
+                                backgroundColor: const Color(0xFFFF3030),
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               child: const Text(
@@ -733,7 +691,6 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
       // ============================================================
       // MOUSE ENTRA
       // ============================================================
-
       onEnter: (_) {
         setState(() {
           _isHovered = true;
@@ -743,7 +700,6 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
       // ============================================================
       // MOUSE SALE
       // ============================================================
-
       onExit: (_) {
         setState(() {
           _isHovered = false;
@@ -764,7 +720,6 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
         // ============================================================
         // SOLTAR
         // ============================================================
-
         onTapUp: (_) {
           setState(() {
             _isPressed = false;
@@ -774,7 +729,6 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
         // ============================================================
         // CANCELAR
         // ============================================================
-
         onTapCancel: () {
           setState(() {
             _isPressed = false;
@@ -784,7 +738,6 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
         // ============================================================
         // CLICK
         // ============================================================
-
         onTap: widget.onTap,
 
         child: AnimatedContainer(
@@ -796,13 +749,11 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
                 ? widget.glowColor.withValues(alpha: 0.08)
                 : Colors.transparent,
 
-            borderRadius:
-                BorderRadius.circular(widget.borderRadius),
+            borderRadius: BorderRadius.circular(widget.borderRadius),
 
             // ========================================================
             // BORDE
             // ========================================================
-
             border: Border.all(
               color: _isActive
                   ? widget.glowColor.withValues(alpha: 0.65)
@@ -813,12 +764,10 @@ class _InteractiveAreaState extends State<_InteractiveArea> {
             // ========================================================
             // BRILLO
             // ========================================================
-
             boxShadow: _isActive
                 ? [
                     BoxShadow(
-                      color: widget.glowColor
-                          .withValues(alpha: 0.40),
+                      color: widget.glowColor.withValues(alpha: 0.40),
                       blurRadius: 16,
                       spreadRadius: 1,
                     ),

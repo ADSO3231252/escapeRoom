@@ -2,15 +2,26 @@
 
  ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart) ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js) ![Express](https://img.shields.io/badge/Express.js-REST-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql) ![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github) ![Jira](https://img.shields.io/badge/Jira-Project-0052CC?logo=jira) ![Figma](https://img.shields.io/badge/Figma-UX%2FUI-F24E1E?logo=figma)
 
-> **Academic Project — SENA ADSO / Center for Technological Design and Innovation**
+## Game Flow
 
----
+1. Difficulty selection.
+2. Interactive tutorial.
+3. Guided Tour.
+4. Level 1 — The Awakening.
+5. Puzzle 1: Sort instructions in sequence `C → A → B → D`.
+6. Puzzle 2: Safe box with code `0004`.
+7. Obtain `KEY 1` (LLAVE 1).
+8. Unlock the door.
+9. `LEVEL 1 COMPLETED` screen.
+10. Autosave and state prepared to unlock Level 2.
 
-## 📌 Description
+## Difficulty Levels
 
-**NEXUS-9: Escape Laboratory** is a 2D educational **Escape Room** game developed as an academic project for the **Software Analysis and Development (ADSO) program at SENA**.
+- Easy: 90 minutes.
+- Normal: 60 minutes.
+- Hard: 40 minutes.
 
-The player controls **K-9**, a female Jack Russell Terrier who wakes up trapped inside a high-tech laboratory. To escape, she must explore different areas, interact with objects, and solve challenges involving sequences, instructions, conditionals, logic, and patterns.
+According to the source document, the storyline and sequence remain identical across all difficulties, while difficulty settings adjust time limits, hints, and complexity. In this implementation, Level 1 retains the same core puzzles and leaves the hint system ready for future expansion.
 
 The project is initially designed as a **3-level MVP**, prioritizing a playable, clear, and functional experience.
 
@@ -552,210 +563,5 @@ Create branch → develop → test → commit → push
 # 📝 Commit Convention
 
 ```bash
-feat: add level 1 puzzle
-fix: correct level 2 navigation
-ui: update main menu
-docs: update level 1 documentation
-test: validate puzzle answers
-refactor: improve level manager
-```
-
-# 📚 Documentation
-
-Official documentation will be available in the GitHub Wiki and `docs/`.
-
-1. Project charter.
-2. Requirements.
-3. Scope.
-4. User stories.
-5. Product Backlog.
-6. Sprint Backlog.
-7. Game Design Document.
-8. Story.
-9. Design de niveles.
-10. Design de puzzles.
-11. UX/UI.
-12. Arquitectura.
-13. UML diagrams.
-14. Database.
-15. API REST.
-16. Git/GitHub.
-17. Test plan.
-18. Installation manual.
-19. User manual.
-20. Maintenance manual.
-21. Evidence and deliverables.
-
-# 📅 One-Week Work Plan
-
-| Day | Activities |
-|---|---|
-| Day 1 | Planning, Jira, GitHub, architecture, and levels |
-| Day 2 | Core systems and base UI |
-| Day 3 | Level 1 implementation |
-| Day 4 | Level 2 and Level 3 implementation |
-| Day 5 | Frontend/backend/database integration |
-| Day 6 | Testing and bug fixing |
-| Day 7 | Documentation, evidence, and delivery |
-
-# 🧪 Testing
-
-The following tests will be performed:
-
-- Functional tests.
-- Integration tests.
-- API tests using Postman.
-- UI tests.
-- Navigation tests.
-- Puzzle tests.
-- Scoring tests.
-- Landscape orientation tests.
-- Platform tests.
-
-Integration flow:
-
-```text
-Flutter → REST API → Node.js → PostgreSQL
-```
-
-# 🚀 Installation
-
-## Requirements
-
-- Git.
-- Flutter.
-- Dart.
-- Node.js.
-- PostgreSQL.
-- Visual Studio Code.
-- Android Studio para Android.
-- Xcode para iOS.
-
-## Clone
-
-```bash
-git clone https://github.com/ORGANIZACION/NEXUS-9.git
-cd NEXUS-9
-```
-
-## Frontend
-
-```bash
-cd frontend
 flutter pub get
 flutter run
-```
-
-For Web:
-
-```bash
-flutter run -d chrome
-```
-
-## Backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-or, depending on the configuration:
-
-```bash
-npm start
-```
-
-## PostgreSQL
-
-```sql
-CREATE DATABASE nexus9;
-```
-
-Then execute the scripts in `database/scripts/`.
-
-# 🔐 Environment Variables
-
-Create `.env` in the backend:
-
-```env
-PORT=3000
-
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=nexus9
-DB_USER=postgres
-DB_PASSWORD=your_password
-
-JWT_SECRET=your_secret
-```
-
-Do not upload `.env` to GitHub.
-
-Example `.gitignore`:
-
-```text
-.env
-node_modules/
-build/
-.dart_tool/
-```
-
-# ✅ MVP Acceptance Criteria
-
-- [ ] The project builds successfully.
-- [ ] The menu works.
-- [ ] The tutorial works.
-- [ ] A game can be started.
-- [ ] All three levels are accessible.
-- [ ] Each level has a puzzle.
-- [ ] Correct answers allow the player to progress.
-- [ ] Incorrect answers generate a penalty.
-- [ ] The inventory works.
-- [ ] The doors work.
-- [ ] The timer works.
-- [ ] The hints work.
-- [ ] The scoring system works.
-- [ ] Victory and defeat screens exist.
-- [ ] The backend receives information.
-- [ ] PostgreSQL stores the required information.
-- [ ] The REST API works.
-- [ ] The code is available on GitHub.
-- [ ] Jira contains the tasks.
-- [ ] The documentation is complete.
-- [ ] Testing evidence exists.
-- [ ] The game can be demonstrated.
-
-# 📊 Project Status
-
-**Status:** MVP in development.
-
-### Priorities
-
-1. Finalize architecture.
-2. Configure repository.
-3. Configure Jira.
-4. Create Flutter structure.
-5. Implement core systems.
-6. Implement Level 1.
-7. Implement Level 2.
-8. Implement Level 3.
-9. Integrate backend.
-10. Test.
-11. Document.
-12. Prepare delivery.
-
-# 📄 License
-
-Project developed for academic purposes for the program:
-
-**Software Analysis and Development — ADSO**  
-**SENA — Centro de Design Tecnológico e Innovación**
-
----
-
-## 🧪 NEXUS-9
-
-> **Explore. Think. Solve. Escape.**
-
-**Academic Project — SENA ADSO**

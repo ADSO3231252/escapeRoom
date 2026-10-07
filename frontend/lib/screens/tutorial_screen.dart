@@ -1,60 +1,167 @@
 import 'package:flutter/material.dart';
 
-import 'level_select_screen.dart';
-
-class TutorialScreen extends StatelessWidget {
+import '../levels/level_01/level01_screen.dart';
+class TutorialScreen extends StatefulWidget {
   const TutorialScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tutorial'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                '¿Cómo jugar?',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+  State<TutorialScreen> createState() => _TutorialScreenState();
+}
 
-              const SizedBox(height: 30),
+class _TutorialScreenState extends State<TutorialScreen> {
+  @override
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.black,
+    body: Stack(
+      fit: StackFit.expand,
+      children: [
+        // ==========================================================
+        // FONDO EXTENDIDO
+        // ==========================================================
+        Image.asset(
+          'assets/backgrounds/tutorial.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        ),
 
-              const Text(
-                'Explora el laboratorio.\n'
-                'Interactúa con los objetos.\n'
-                'Encuentra pistas.\n'
-                'Resuelve los puzzles.\n'
-                'Escapa del laboratorio.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.6,
-                ),
-              ),
+        // Oscurecimiento del fondo extendido
+        Container(
+          color: Colors.black.withValues(alpha: 0.55),
+        ),
 
-              const SizedBox(height: 40),
+        // ==========================================================
+        // CONTENIDO ORIGINAL 16:9
+        // ==========================================================
+        Center(
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final height = constraints.maxHeight;
 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const LevelSelectScreen(),
+                return Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Imagen original sin deformar
+                    Image.asset(
+                      'assets/backgrounds/tutorial.png',
+                      fit: BoxFit.fill,
                     ),
-                  );
-                },
-                child: const Text('COMENZAR'),
-              ),
-            ],
+
+                    // VOLVER
+                    Positioned(
+                      left: 475 / 1664 * width,
+                      top: 735 / 936 * height,
+                      width: 250 / 1664 * width,
+                      height: 72 / 936 * height,
+                      child: _InteractiveArea(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+
+                    // COMENZAR
+                    Positioned(
+                      left: 1015 / 1664 * width,
+                      top: 735 / 936 * height,
+                      width: 310 / 1664 * width,
+                      height: 72 / 936 * height,
+                      child: _InteractiveArea(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Level01Screen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+}
+
+class _InteractiveArea extends StatefulWidget {
+  final VoidCallback onTap;
+
+  const _InteractiveArea({required this.onTap});
+
+  @override
+  State<_InteractiveArea> createState() => _InteractiveAreaState();
+}
+
+class _InteractiveAreaState extends State<_InteractiveArea> {
+  bool _hovering = false;
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) {
+        setState(() {
+          _hovering = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          _hovering = false;
+        });
+      },
+      child: GestureDetector(
+        onTapDown: (_) {
+          setState(() {
+            _pressed = true;
+          });
+        },
+        onTapUp: (_) {
+          setState(() {
+            _pressed = false;
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            _pressed = false;
+          });
+        },
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          decoration: BoxDecoration(
+            color: _pressed
+                ? const Color(0xFF00D9FF).withValues(alpha: 0.12)
+                : _hovering
+                ? const Color(0xFF00D9FF).withValues(alpha: 0.06)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: _hovering
+                  ? const Color(0xFF00D9FF).withValues(alpha: 0.65)
+                  : Colors.transparent,
+              width: 2,
+            ),
+            boxShadow: _hovering
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFF00D9FF).withValues(alpha: 0.40),
+                      blurRadius: 16,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : [],
           ),
         ),
       ),

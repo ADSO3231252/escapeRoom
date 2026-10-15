@@ -329,35 +329,38 @@ class _Level1ScreenState extends State<Level1Screen> {
   }
 
   Widget _hud() {
+    // Use compact dimensions on narrow screens while preserving the landscape layout.
+    final compact = MediaQuery.sizeOf(context).width < 700;
+
     return Container(
-      height: 58,
+      height: compact ? 44 : 58,
       decoration: BoxDecoration(
         color: const Color(0xFF04111D),
         border: Border(bottom: BorderSide(color: cyan.withOpacity(.18))),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
       child: Row(
         children: [
-          const Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              NeonText('NIVEL 1 — LABORATORIO DE INICIO', size: 10),
-              NeonText('OBJETIVO: OBTÉN LA LLAVE 1 Y ESCAPA', size: 8, color: muted),
+              NeonText('NIVEL 1 — LABORATORIO DE INICIO', size: compact ? 8 : 10),
+              NeonText('OBJETIVO: OBTÉN LA LLAVE 1 Y ESCAPA', size: compact ? 6 : 8, color: muted),
             ],
           ),
           const Spacer(),
-          NeonText(widget.state.remainingText, size: 19, color: whiteBlue, weight: FontWeight.w800),
-          const SizedBox(width: 14),
+          NeonText(widget.state.remainingText, size: compact ? 15 : 19, color: whiteBlue, weight: FontWeight.w800),
+          SizedBox(width: compact ? 4 : 14),
           IconButton(
             tooltip: 'Pista',
             onPressed: _hint,
-            icon: const Icon(Icons.lightbulb_outline, color: cyan, size: 19),
+            icon: Icon(Icons.lightbulb_outline, color: cyan, size: compact ? 16 : 19),
           ),
           IconButton(
             tooltip: 'Pausa',
             onPressed: () => setState(() => paused = !paused),
-            icon: Icon(paused ? Icons.play_arrow : Icons.pause, color: cyan, size: 19),
+            icon: Icon(paused ? Icons.play_arrow : Icons.pause, color: cyan, size: compact ? 16 : 19),
           ),
         ],
       ),
@@ -374,6 +377,8 @@ class _Level1ScreenState extends State<Level1Screen> {
     required VoidCallback onTap,
     bool danger = false,
   }) {
+    final compact = MediaQuery.sizeOf(context).width < 700;
+
     return Positioned(
       left: left,
       top: top,
@@ -389,11 +394,11 @@ class _Level1ScreenState extends State<Level1Screen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: danger ? dangerColor : cyan.withOpacity(.7), size: 27),
+              Icon(icon, color: danger ? dangerColor : cyan.withOpacity(.7), size: compact ? 20 : 27),
               const SizedBox(height: 6),
-              NeonText(label, size: 8, color: danger ? dangerColor : muted, align: TextAlign.center),
+              NeonText(label, size: compact ? 7 : 8, color: danger ? dangerColor : muted, align: TextAlign.center),
               const SizedBox(height: 5),
-              NeonText('E  INTERACTUAR', size: 7, color: muted),
+              NeonText('E  INTERACTUAR', size: compact ? 6 : 7, color: muted),
             ],
           ),
         ),
@@ -404,55 +409,62 @@ class _Level1ScreenState extends State<Level1Screen> {
   Color get dangerColor => danger;
 
   Widget _luna() {
+    final compact = MediaQuery.sizeOf(context).width < 700;
+    final size = compact ? 44.0 : 58.0;
+
     return Container(
-      width: 58,
-      height: 58,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: cyan.withOpacity(.08),
         shape: BoxShape.circle,
         border: Border.all(color: cyan.withOpacity(.3)),
       ),
-      child: const Icon(Icons.pets, color: whiteBlue, size: 30),
+      child: Icon(Icons.pets, color: whiteBlue, size: compact ? 23 : 30),
     );
   }
 
   Widget _inventory() {
+    final compact = MediaQuery.sizeOf(context).width < 700;
+
     return Container(
-      height: 58,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: compact ? 44 : 58,
+      padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
       decoration: BoxDecoration(
         color: panel.withOpacity(.94),
         border: Border.all(color: cyan.withOpacity(.2)),
       ),
       child: Row(
         children: [
-          const NeonText('INVENTARIO', size: 9, color: muted),
-          const SizedBox(width: 12),
+          NeonText('INVENTARIO', size: compact ? 7 : 9, color: muted),
+          SizedBox(width: compact ? 6 : 12),
           _slot(
             widget.state.key1Obtained ? Icons.vpn_key : Icons.lock_outline,
             widget.state.key1Obtained ? 'LLAVE 1' : '—',
           ),
           const Spacer(),
-          const NeonText('W A S D  MOVER   •   E  INTERACTUAR', size: 8, color: muted),
+          NeonText('W A S D  MOVER   •   E  INTERACTUAR', size: compact ? 6 : 8, color: muted),
         ],
       ),
     );
   }
 
   Widget _slot(IconData icon, String label) {
+    final compact = MediaQuery.sizeOf(context).width < 700;
+
     return Row(
       children: [
         Container(
-          width: 34,
-          height: 34,
+          width: compact ? 27 : 34,
+          height: compact ? 27 : 34,
           decoration: BoxDecoration(
             color: widget.state.key1Obtained ? cyan.withOpacity(.12) : Colors.black26,
             border: Border.all(color: cyan.withOpacity(.22)),
           ),
-          child: Icon(icon, color: widget.state.key1Obtained ? cyan : muted, size: 18),
+          child: Icon(icon, color: widget.state.key1Obtained ? cyan : muted, size: compact ? 14 : 18),
         ),
         const SizedBox(width: 6),
-        NeonText(label, size: 8, color: widget.state.key1Obtained ? cyan : muted),
+        NeonText(label, size: compact ? 7 : 8, color: widget.state.key1Obtained ? cyan : muted),
       ],
     );
   }
@@ -663,59 +675,104 @@ class _OrderPuzzleDialogState extends State<_OrderPuzzleDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // Keep the puzzle compact and constrain its height on short screens.
+    final screenSize = MediaQuery.sizeOf(context);
+    final compact = screenSize.height < 520 || screenSize.width < 700;
+    final titleSize = compact ? 12.0 : 14.0;
+    final bodySize = compact ? 10.0 : 11.0;
+    final rowPadding = compact ? 7.0 : 9.0;
+    final rowGap = compact ? 4.0 : 6.0;
+    final maxListHeight = screenSize.height * (compact ? 0.34 : 0.40);
+
     return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: screenSize.width < 500 ? 12 : 24,
+        vertical: 8,
+      ),
+      contentPadding: EdgeInsets.fromLTRB(
+        compact ? 12 : 20,
+        compact ? 4 : 8,
+        compact ? 12 : 20,
+        compact ? 4 : 8,
+      ),
+      titlePadding: EdgeInsets.fromLTRB(
+        compact ? 16 : 24,
+        compact ? 12 : 20,
+        compact ? 16 : 24,
+        4,
+      ),
+      actionsPadding: EdgeInsets.fromLTRB(8, 0, 8, compact ? 4 : 8),
       backgroundColor: panel,
-      title: const NeonText('TERMINAL — PROTOCOLO', size: 15),
+      title: NeonText('TERMINAL — PROTOCOLO', size: titleSize),
       content: SizedBox(
-        width: 420,
+        width: (screenSize.width * 0.82).clamp(240.0, 560.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Ordena las instrucciones para completar el protocolo.',
-              style: TextStyle(color: whiteBlue, fontSize: 12),
+              textAlign: TextAlign.center,
+              style: TextStyle(color: whiteBlue, fontSize: bodySize),
             ),
-            const SizedBox(height: 14),
-            ReorderableListView(
-              shrinkWrap: true,
-              children: [
-                for (final item in items)
-                  Container(
-                    key: ValueKey(item),
-                    margin: const EdgeInsets.only(bottom: 7),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: panel2,
-                      border: Border.all(color: cyan.withOpacity(.18)),
-                    ),
-                    child: Text(item, style: const TextStyle(color: whiteBlue, fontSize: 11)),
-                  ),
-              ],
-              onReorder: (oldIndex, newIndex) {
-                setState(() {
-                  if (newIndex > oldIndex) newIndex--;
-                  final item = items.removeAt(oldIndex);
-                  items.insert(newIndex, item);
-                });
-              },
+            SizedBox(height: compact ? 6 : 10),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: maxListHeight),
+              child: SingleChildScrollView(
+                child: ReorderableListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  buildDefaultDragHandles: true,
+                  children: [
+                    for (final item in items)
+                      Container(
+                        key: ValueKey(item),
+                        margin: EdgeInsets.only(bottom: rowGap),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: compact ? 8 : 10,
+                          vertical: rowPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          color: panel2,
+                          border: Border.all(color: cyan.withValues(alpha: .18)),
+                        ),
+                        child: Text(
+                          item,
+                          style: TextStyle(color: whiteBlue, fontSize: bodySize),
+                        ),
+                      ),
+                  ],
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) newIndex--;
+                      final item = items.removeAt(oldIndex);
+                      items.insert(newIndex, item);
+                    });
+                  },
+                ),
+              ),
             ),
-            const SizedBox(height: 12),
-            const NeonText('SOLUCIÓN DEL DOCUMENTO: C → A → B → D', size: 9, color: muted),
+            SizedBox(height: compact ? 5 : 8),
+            const NeonText(
+              'SOLUCIÓN DEL DOCUMENTO: C → A → B → D',
+              size: 8,
+              color: muted,
+            ),
           ],
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const NeonText('CERRAR', size: 10, color: muted),
+          child: NeonText('CERRAR', size: compact ? 9 : 10, color: muted),
         ),
         TextButton(
           onPressed: validate,
-          child: const NeonText('VALIDAR', size: 10),
+          child: NeonText('VALIDAR', size: compact ? 9 : 10),
         ),
       ],
     );
   }
+
 }
 
 class _CodeDialog extends StatefulWidget {
@@ -751,7 +808,7 @@ class _CodeDialogState extends State<_CodeDialog> {
       backgroundColor: panel,
       title: const NeonText('CAJA DE SEGURIDAD — N°01', size: 14),
       content: SizedBox(
-        width: 300,
+        width: MediaQuery.sizeOf(context).width * 0.72,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
